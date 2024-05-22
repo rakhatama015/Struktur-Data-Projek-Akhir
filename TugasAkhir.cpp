@@ -22,6 +22,7 @@ class Resto{
 
         void queue();
         void stack();
+        void rakha();
 };
 
 int main(){
