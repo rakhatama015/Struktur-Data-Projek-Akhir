@@ -8,7 +8,13 @@ using namespace std;
 
 class Resto{
     private:
-        
+        struct pesanan{
+            int jumlahPesanan;
+            int harga;
+            int totalHarga;
+            string namaPesanan;
+        };
+        int antrian;
     public:
         void menuList();
         void pesanMenu();
@@ -22,9 +28,6 @@ class Resto{
 
         void queue();
         void stack();
-        void rakha();
-        void stack();
-        void addsdahffv();
 };
 
 int main(){
@@ -37,9 +40,11 @@ int main(){
 }
 
 void Resto::menuList(){
-    int pilihan, jumlah, totalHarga, harga, attempt = 0;
-    vector<int> jumlahHarga;
-    
+    int pilihan, jumlah, harga, attempt = 0;
+    string nama;
+    pesanan p;
+    vector<pesanan> daftarP;
+;
     do{
         cout << "|-------------------------------------------|\n";
         cout << "|=============== MENU MAKANAN ==============|\n";
@@ -49,10 +54,10 @@ void Resto::menuList(){
         cout << "|3. Mie Ayam                      Rp. 10.000|\n";
         cout << "|4. Mie Ayam Kuah                 Rp. 10.000|\n";
         cout << "|5. Mie Goreng                    Rp. 10.000|\n";
-        cout << "|6. Nasi Uduk                     Rp. 10.000|\n";
-        cout << "|7. Nasi Liwet                    Rp. 10.000|\n";
-        cout << "|8. Soto Ayam                     Rp. 10.000|\n";
-        cout << "|9. Rawon                         Rp. 10.000|\n";
+        cout << "|6. Nasi Uduk                     Rp. 12.000|\n";
+        cout << "|7. Nasi Liwet                    Rp. 12.000|\n";
+        cout << "|8. Soto Ayam                     Rp. 12.000|\n";
+        cout << "|9. Rawon                         Rp. 12.000|\n";
         cout << "|0. Selesai                                 |\n";
         cout << "|Masukkan Pilihan Menu Anda > ";
         cin >> pilihan;
@@ -61,77 +66,153 @@ void Resto::menuList(){
         {
         case 1:
             harga = 15000;
+            nama = "Nasi Goreng";
+
             cout << "|Anda Memilih Nasi Goreng Jawa\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+            
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
-        
+
         case 2: 
             harga = 15000;
+            nama = "Nasi Goreng Ayam";
+
             cout << "|Anda Memilih Nasi Goreng Ayam\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);            
             break;
+
         case 3:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 10000;
+            cout << "|Anda Memilih Mie Ayam\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
+
         case 4:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 10000;
+            nama = "Mie Ayam Kuah";
+            cout << "|Anda Memilih Mie Ayam Kuah\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
+
         case 5:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 10000;
+            nama = "Mie Goreng";
+
+            cout << "|Anda Memilih Mie Goreng\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
         case 6:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 13000;
+            nama = "Nasi Uduk";
+
+            cout << "|Anda Memilih Nasi Uduk\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);    
             break;
         case 7:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 13000;
+            nama = "Nasi Liwet";
+
+            cout << "|Anda Memilih Nasi Liwet\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
+            break;
+        case 8:
+            harga = 13000;
+            nama = "Soto Ayam";
+
+            cout << "|Anda Memilih Soto Ayam\n";
+            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cin >> jumlah;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
         case 9:
-            harga = 15000;
-            cout << "|Anda Memilih Nasi Goreng Jawa\n";
+            harga = 13000;
+            nama = "Rawon";
+
+            cout << "|Anda Memilih Rawon\n";
             cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
-            totalHarga = (harga * jumlah);
-            jumlahHarga[attempt] = totalHarga;
+
+            p.harga = harga;
+            p.totalHarga = jumlah * harga;
+            p.jumlahPesanan = jumlah;
+            p.namaPesanan = nama;
+
+            daftarP.push_back(p);
             break;
         case 0:
-
+            cout << "Pesanan Anda Telah Diterima\n";
             break;
         default:
             break;
         }
 
-        attempt++;
-
     }while(pilihan != 0);
+
+    antrian++;
+
+    cout << "\n-------------- PESANAN ANDA ----------\n" << endl;
+    for(int i = 0; i < daftarP.size(); i++){
+        cout << i << ". " <<daftarP[i]. namaPesanan << "\t |Harga" << daftarP[i].harga << "\t |Jumlah" << daftarP[i].jumlahPesanan << "\t |Total" << daftarP[i].totalHarga << endl;
+    }
 }
