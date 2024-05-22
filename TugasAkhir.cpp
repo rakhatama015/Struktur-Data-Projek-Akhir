@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cmath>
 #include <math.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -44,7 +45,13 @@ void Resto::menuList(){
     string nama;
     pesanan p;
     vector<pesanan> daftarP;
-;
+
+    const int nameWidth = 20;
+    const int priceWidth = 10;
+    const int jumlahWidth = 8;
+    const int totalWidth = 12;
+    const int cornerLeft = 3;
+
     do{
         cout << "|-------------------------------------------|\n";
         cout << "|=============== MENU MAKANAN ==============|\n";
@@ -211,8 +218,11 @@ void Resto::menuList(){
 
     antrian++;
 
-    cout << "\n-------------- PESANAN ANDA ----------\n" << endl;
+    cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
+
     for(int i = 0; i < daftarP.size(); i++){
-        cout << i << ". " <<daftarP[i]. namaPesanan << "\t |Harga" << daftarP[i].harga << "\t |Jumlah" << daftarP[i].jumlahPesanan << "\t |Total" << daftarP[i].totalHarga << endl;
+        cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
     }
 }
