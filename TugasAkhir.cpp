@@ -35,7 +35,21 @@ int main(){
     Resto resto;
     int pilihan;
 
-    resto.menuList();
+    cout << '|' << string(75, '-')  << '|' << endl;
+    cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
+    cout << '|' << string(75, '-') << '|' << endl;
+    cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
+    cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
+
+    switch (pilihan)
+    {
+    case 1:
+        resto.menuList();
+        break;
+    
+    default:
+        break;
+    }
 
     return 0;
 }
