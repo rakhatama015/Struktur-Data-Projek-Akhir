@@ -217,6 +217,11 @@ void Resto::pelanggan(){
     case 1:
         menuList();
         break;
+    case 2:
+        reservasiMeja();
+        break;
+    case 3:
+        break;
     default:
         break;
     }
@@ -266,6 +271,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+            // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
 
         case 2: 
@@ -281,7 +290,11 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);            
+            daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);            
             break;
 
         case 3:
@@ -296,6 +309,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
 
         case 4:
@@ -311,6 +328,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
 
         case 5:
@@ -327,6 +348,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
         case 6:
             harga = 13000;
@@ -341,7 +366,11 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);    
+            daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p); 
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);   
             break;
         case 7:
             harga = 13000;
@@ -357,6 +386,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
         case 8:
             harga = 13000;
@@ -372,6 +405,10 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
             break;
         case 9:
             harga = 13000;
@@ -387,6 +424,11 @@ void Resto::menuList(){
             p.namaPesanan = nama;
 
             daftarP.push_back(p);
+            insertStack(p);
+            insertQueue(p);
+                        // Insert into tree
+            treeRoot = insertTree(treeRoot, p.totalHarga);
+
             break;
         case 0:
             cout << "Pesanan Anda Telah Diterima\n";
@@ -408,6 +450,10 @@ void Resto::menuList(){
     for(int i = 0; i < daftarP.size(); i++){
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
     }
+
+    cout << "\nTraversal Tree Pesanan (Total Harga):" << endl;
+    displayTree();
+
 }
 
 void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
@@ -465,11 +511,12 @@ void Resto::reservasiMeja(){
     int pilihan;
 
     cout << "Masukkan Nama Anda: ";
+    cin.ignore();
     getline(cin, nama);
     cout << "Masukkan Nomor HP Anda: ";
     getline(cin, noHP);
 
-    int nomerHP = stoi(noHP);
+    double nomerHP = stoi(noHP);
 
     int i = hashFunction(nomerHP);
 
@@ -645,3 +692,22 @@ void Resto::tampilkanReservasi() {
     }
 }
 
+void Resto::tampilkanPesanan() {
+    if (daftarP.empty()) {
+        cout << "Belum ada pesanan." << endl;
+        return;
+    }
+
+    const int nameWidth = 20;
+    const int priceWidth = 10;
+    const int jumlahWidth = 8;
+    const int totalWidth = 12;
+
+    cout << left << string(19, '-') << " DAFTAR PESANAN " << right << string(20, '-') << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
+
+    for (int i = 0; i < daftarP.size(); i++) {
+        cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
+    }
+}

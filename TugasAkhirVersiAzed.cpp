@@ -24,7 +24,7 @@ class Resto{
             node* prev;
             node* next;
         };
-        struct ruangan{
+        struct bangku{
             node* head;
         };
         struct TreeNode {
@@ -78,7 +78,7 @@ class Resto{
 
         int antrian;
         vector<pesanan> daftarP;
-        ruangan ruang[SIZE];
+        bangku meja[SIZE];
         stack<pesanan> stackPesanan;
         queue<pesanan> queuePesanan;
         TreeNode* treeRoot;
@@ -358,11 +358,11 @@ void Resto::reservasiMeja() {
     cout << "Masukkan Nomor HP Anda: ";
     getline(cin, noHP);
 
-    int nomerHP = stoi(noHP);
+    int nomerHP = stoll(noHP);
 
     int i = hashFunction(nomerHP);
 
-    if (ruang[i].head != nullptr && ruang[i].head->name != "") {
+    if (meja[i].head != nullptr && meja[i].head->name != "") {
         cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
         cout << "1. Antri\n";
         cout << "2. Pindah\n";
@@ -387,10 +387,10 @@ void Resto::hash(string nama, int nomerHP, int pilihan) {
         newNode->prev = nullptr;
         newNode->next = nullptr;
 
-        if (ruang[index].head == nullptr) {
-            ruang[index].head = newNode;
+        if (meja[index].head == nullptr) {
+            meja[index].head = newNode;
         } else {
-            node* temp = ruang[index].head;
+            node* temp = meja[index].head;
             while (temp->next != nullptr) {
                 temp = temp->next;
             }
@@ -407,7 +407,7 @@ void Resto::hash(string nama, int nomerHP, int pilihan) {
             newNode->prev = nullptr;
             newNode->next = nullptr;
 
-            ruang[index].head = newNode;
+            meja[index].head = newNode;
         } else {
             cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
         }
@@ -424,7 +424,7 @@ int Resto::quadraticProbing(int nomerHP, int attempt) {
 
     for (int i = 1; i < SIZE; i++) {
         probeIndex = (index + attempt * attempt) % SIZE;
-        if (ruang[probeIndex].head == nullptr) {
+        if (meja[probeIndex].head == nullptr) {
             return probeIndex;
         }
         attempt++;
@@ -571,8 +571,8 @@ void Resto::tampilkanAntrian() {
 void Resto::tampilkanReservasi() {
     cout << "Daftar reservasi meja:" << endl;
     for (int i = 0; i < SIZE; i++) {
-        if (ruang[i].head != nullptr) {
-            node* temp = ruang[i].head;
+        if (meja[i].head != nullptr) {
+            node* temp = meja[i].head;
             while (temp != nullptr) {
                 cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
                 temp = temp->next;
