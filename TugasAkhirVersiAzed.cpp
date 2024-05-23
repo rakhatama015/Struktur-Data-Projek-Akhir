@@ -20,12 +20,21 @@ class Resto{
         };
         struct node{
             int key;
-            string name;
+            string name = "";
             node* prev;
             node* next;
         };
         struct bangku{
             node* head;
+        };
+        struct Node{
+          int key;
+          string name;
+          Node* prev;
+          Node* next;  
+        };
+        struct ruangan{
+            Node* head;
         };
         struct TreeNode {
             int data;
@@ -79,6 +88,7 @@ class Resto{
         int antrian;
         vector<pesanan> daftarP;
         bangku meja[SIZE];
+        ruangan ruang[SIZE];
         stack<pesanan> stackPesanan;
         queue<pesanan> queuePesanan;
         TreeNode* treeRoot;
@@ -133,10 +143,10 @@ int main(){
     case 1:
 
         do{
-            cout << "\nMasukkan Nama Anda: ";
+            cout << "\n|Masukkan Nama Anda: ";
             cin.ignore();
             getline(cin, nama);
-            cout << "Masukkan Password: ";
+            cout << "|Masukkan Password: ";
             getline(cin, password);
 
             if(nama == adminName && password == adminPass){
@@ -212,6 +222,9 @@ void Resto::pelanggan(){
     {
     case 1:
         menuList();
+        break;
+    case 2:
+        reservasiMeja();
         break;
     default:
         break;

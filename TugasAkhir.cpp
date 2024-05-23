@@ -13,7 +13,6 @@ using namespace std;
 
 class Resto{
     private:
-    private:
         struct pesanan{
             int jumlahPesanan;
             int harga;
@@ -26,8 +25,17 @@ class Resto{
             node* prev;
             node* next;
         };
-        struct ruangan{
+        struct bangku{
             node* head;
+        };
+        struct Node{
+            int key;
+            string name;
+            node* prev;
+            node* next;
+        };
+        struct ruangan{
+            Node* head;
         };
         struct TreeNode {
             int data;
@@ -80,6 +88,7 @@ class Resto{
 
         int antrian;
         vector<pesanan> daftarP;
+        bangku meja[SIZE];
         ruangan ruang[SIZE];
         stack<pesanan> stackPesanan;
         queue<pesanan> queuePesanan;
@@ -87,6 +96,8 @@ class Resto{
         Graph graph;
 
     public:
+        bangku meja[SIZE] = { nullptr };
+        ruangan ruang[SIZE] = { nullptr };
         Resto() : treeRoot(nullptr), graph(SIZE) {}
         void menuList();
         void pesanMenu();
@@ -228,7 +239,7 @@ void Resto::pelanggan(){
 }
 
 void Resto::menuList(){
-    int pilihan, jumlah, harga, attempt = 0;
+    int pilihan, jumlah, harga, total, attempt = 0;
     string nama;
     pesanan p;
 
@@ -449,7 +460,12 @@ void Resto::menuList(){
 
     for(int i = 0; i < daftarP.size(); i++){
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
+        total += daftarP[i].totalHarga;
     }
+
+    cout << left << string(50, '-') << endl;
+
+    cout << "\nTotal: " << right << setw(46) << total;
 
     cout << "\nTraversal Tree Pesanan (Total Harga):" << endl;
     displayTree();
@@ -516,12 +532,12 @@ void Resto::reservasiMeja(){
     cout << "Masukkan Nomor HP Anda: ";
     getline(cin, noHP);
 
-    double nomerHP = stoi(noHP);
+    double nomerHP = stoll(noHP);
 
     int i = hashFunction(nomerHP);
 
-    if(ruang[i].head->name != ""){
-        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?";
+    if(meja[i].head != nullptr && meja[i].head->name != ""){
+        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
         cout << "1. Antri\n";
         cout << "2. Pindah\n";
         cin >> pilihan;
@@ -543,10 +559,10 @@ void Resto::hash(string nama, int nomerHP, int pilihan){
         newNode->prev = nullptr;
         newNode->next = nullptr;
 
-        if (ruang[index].head == nullptr) {
-            ruang[index].head = newNode;
+        if (meja[index].head == nullptr) {
+            meja[index].head = newNode;
         } else {
-            node* temp = ruang[index].head;
+            node* temp = meja[index].head;
             while (temp->next != nullptr) {
                 temp = temp->next;
             }
@@ -566,7 +582,7 @@ void Resto::hash(string nama, int nomerHP, int pilihan){
             newNode->prev = nullptr;
             newNode->next = nullptr;
 
-            ruang[index].head = newNode;
+            meja[index].head = newNode;
         } else {
             cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
         }
@@ -583,7 +599,7 @@ int Resto::quadraticProbing(int nomerHP, int attempt) {
 
     for (int i = 1; i < SIZE; i++) {
         probeIndex = (index + attempt * attempt) % SIZE;
-        if (ruang[probeIndex].head == nullptr) {
+        if (meja[probeIndex].head == nullptr) {
             return probeIndex;
         }
         attempt++;
@@ -680,8 +696,8 @@ void Resto::tampilkanAntrian() {
 void Resto::tampilkanReservasi() {
     cout << "Daftar reservasi meja:" << endl;
     for (int i = 0; i < SIZE; i++) {
-        if (ruang[i].head != nullptr) {
-            node* temp = ruang[i].head;
+        if (meja[i].head != nullptr) {
+            node* temp = meja[i].head;
             while (temp != nullptr) {
                 cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
                 temp = temp->next;
