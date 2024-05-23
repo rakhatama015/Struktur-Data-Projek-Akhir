@@ -17,9 +17,14 @@ class Resto{
             int totalHarga;
             string namaPesanan;
         };
-        struct ruangan{
+        struct node{
             int key;
             string name;
+            node* prev;
+            node* next;
+        };
+        struct ruangan{
+            node* head;
         };
         int antrian;
         vector<pesanan> daftarP;
@@ -31,8 +36,9 @@ class Resto{
         void tampilkanPesanan();
         void reservasiMeja();
 
-        void hash(string nama, int nomerHP);
+        void hash(string nama, int nomerHP, int pilihan);
         int hashFunction(int nomerHP);
+        int quadraticProbing(int nomerHP, int attempt);
         void sort();
         void mergeSort(vector<pesanan>&, int left, int right) ;
         void merge(vector<pesanan>&, int left, int mid, int right);
@@ -355,6 +361,8 @@ void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
 
 void Resto::reservasiMeja(){
     string nama, noHP;
+    int pilihan;
+
     cout << "Masukkan Nama Anda: ";
     getline(cin, nama);
     cout << "Masukkan Nomor HP Anda: ";
@@ -362,17 +370,77 @@ void Resto::reservasiMeja(){
 
     int nomerHP = stoi(noHP);
 
-    hash(nama, nomerHP);
+    int i = hashFunction(nomerHP);
+
+    if(ruang[i].head->name != ""){
+        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?";
+        cout << "1. Antri\n";
+        cout << "2. Pindah\n";
+        cin >> pilihan;
+    }
+
+    hash(nama, nomerHP, pilihan);
 }
 
-void Resto::hash(string nama, int nomerHP){
+void Resto::hash(string nama, int nomerHP, int pilihan){
     int index = hashFunction(nomerHP);
+    int attempt = 0;
     
-    ruang[index].name = nama;
-    ruang[index].key = nomerHP;
+    if(pilihan == 1){
+        int index = hashFunction(nomerHP);
+
+        node* newNode = new node;
+        newNode->name = nama;
+        newNode->key = nomerHP;
+        newNode->prev = nullptr;
+        newNode->next = nullptr;
+
+        if (ruang[index].head == nullptr) {
+            ruang[index].head = newNode;
+        } else {
+            node* temp = ruang[index].head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+            newNode->prev = temp;
+        }
+    }
+
+    else if(pilihan == 2){
+
+        index = quadraticProbing(nomerHP, attempt);
+
+        if (index != -1) {
+            node* newNode = new node;
+            newNode->name = nama;
+            newNode->key = nomerHP;
+            newNode->prev = nullptr;
+            newNode->next = nullptr;
+
+            ruang[index].head = newNode;
+        } else {
+            cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
+        }
+    }
 }
 
 int Resto::hashFunction(int nomerHP){
     return abs(nomerHP) % SIZE;
+}
+
+int Resto::quadraticProbing(int nomerHP, int attempt) {
+    int index = hashFunction(nomerHP);
+    int probeIndex = index;
+
+    for (int i = 1; i < SIZE; i++) {
+        probeIndex = (index + attempt * attempt) % SIZE;
+        if (ruang[probeIndex].head == nullptr) {
+            return probeIndex;
+        }
+        attempt++;
+    }
+
+    return -1; // Semua bucket terisi, tidak ada tempat untuk menambahkan data baru
 }
 
