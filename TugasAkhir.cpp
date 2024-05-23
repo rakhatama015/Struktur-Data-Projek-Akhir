@@ -7,6 +7,8 @@
 
 using namespace std;
 
+#define SIZE 10
+
 class Resto{
     private:
         struct pesanan{
@@ -15,15 +17,22 @@ class Resto{
             int totalHarga;
             string namaPesanan;
         };
+        struct ruangan{
+            int key;
+            string name;
+        };
         int antrian;
         vector<pesanan> daftarP;
+        ruangan ruang[SIZE];
+
     public:
         void menuList();
         void pesanMenu();
         void tampilkanPesanan();
-        void reservasi();
+        void reservasiMeja();
 
-        void hash();
+        void hash(string nama, int nomerHP);
+        int hashFunction(int nomerHP);
         void sort();
         void mergeSort(vector<pesanan>&, int left, int right) ;
         void merge(vector<pesanan>&, int left, int mid, int right);
@@ -37,21 +46,35 @@ class Resto{
 
 int main(){
     Resto resto;
+    string nama, password, adminName, adminPass;
     int pilihan;
 
     cout << "selamat datang aplikasi resto, silahkan anda pilih anda sebagai apa\n";
     cout << "1. Admin\n";
     cout << "2. Pelanggan\n";
+    cout << "0. Keluar\n";
     cout << "Masukkan Pilihan Anda > ";
     cin >> pilihan;
 
     switch (pilihan)
     {
     case 1:
-        resto.admin();
+        cout << "Masukkan Nama Anda: ";
+        getline(cin, nama);
+        cout << "Masukkan Password: ";
+        getline(cin, password);
+
+        if(nama == adminName && password == adminPass){
+            resto.admin();
+        }
+        else{
+            cout << "Sandi Salah\n";
+        }
         break;
     case 2:
         resto.pelanggan();
+        break;
+    case 0: 
         break;
     default:
         break;
@@ -75,6 +98,7 @@ void Resto::pelanggan(){
     cout << '|' << string(75, '-') << '|' << endl;
     cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
     cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
+    cout << "|3. Reservasi Ruangan\n";
     cout << "|3. Tampilkan Meja Kosong\n";
     cout << "|4. Tampilkan Letak Meja di restauran\n";
     cout << "|0. Keluar\n";
@@ -328,3 +352,27 @@ void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
         k++;
     }
 }
+
+void Resto::reservasiMeja(){
+    string nama, noHP;
+    cout << "Masukkan Nama Anda: ";
+    getline(cin, nama);
+    cout << "Masukkan Nomor HP Anda: ";
+    getline(cin, noHP);
+
+    int nomerHP = stoi(noHP);
+
+    hash(nama, nomerHP);
+}
+
+void Resto::hash(string nama, int nomerHP){
+    int index = hashFunction(nomerHP);
+    
+    ruang[index].name = nama;
+    ruang[index].key = nomerHP;
+}
+
+int Resto::hashFunction(int nomerHP){
+    return abs(nomerHP) % SIZE;
+}
+
