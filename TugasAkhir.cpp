@@ -88,8 +88,7 @@ class Resto{
 
         int antrian;
         vector<pesanan> daftarP;
-        bangku meja[SIZE];
-        ruangan ruang[SIZE];
+
         stack<pesanan> stackPesanan;
         queue<pesanan> queuePesanan;
         TreeNode* treeRoot;
