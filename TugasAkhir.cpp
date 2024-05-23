@@ -16,6 +16,7 @@ class Resto{
             string namaPesanan;
         };
         int antrian;
+        vector<pesanan> daftarP;
     public:
         void menuList();
         void pesanMenu();
@@ -24,8 +25,8 @@ class Resto{
 
         void hash();
         void sort();
-        void mergeSort();
-        void merge();
+        void mergeSort(vector<pesanan>&, int left, int right) ;
+        void merge(vector<pesanan>&, int left, int mid, int right);
 
         void queue();
         void stack();
@@ -51,7 +52,7 @@ int main(){
         break;
     case 2:
         resto.pelanggan();
-    
+        break;
     default:
         break;
     }
@@ -76,13 +77,15 @@ void Resto::pelanggan(){
     cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
     cout << "|3. Tampilkan Meja Kosong\n";
     cout << "|4. Tampilkan Letak Meja di restauran\n";
+    cout << "|0. Keluar\n";
+    cout << "|Masukkan Pilihan Anda > ";
+    cin >> pilihan;
 
     switch (pilihan)
     {
     case 1:
         menuList();
         break;
-    
     default:
         break;
     }
@@ -92,7 +95,6 @@ void Resto::menuList(){
     int pilihan, jumlah, harga, attempt = 0;
     string nama;
     pesanan p;
-    vector<pesanan> daftarP;
 
     const int nameWidth = 20;
     const int priceWidth = 10;
@@ -266,11 +268,63 @@ void Resto::menuList(){
 
     antrian++;
 
+    mergeSort(daftarP, 0, daftarP.size() - 1);
+
     cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
     cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
     for(int i = 0; i < daftarP.size(); i++){
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
+    }
+}
+
+void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        // Membagi vektor menjadi dua bagian, kemudian melakukan rekursi
+        mergeSort(p, left, mid);
+        mergeSort(p, mid + 1, right);
+
+        // Menggabungkan dua bagian yang telah diurutkan
+        merge(p, left, mid, right);
+    }
+}
+
+void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    vector<pesanan> leftVec(n1);
+    vector<pesanan> rightVec(n2);
+
+    for (int i = 0; i < n1; ++i)
+        leftVec[i] = p[left + i];
+    for (int i = 0; i < n2; ++i)
+        rightVec[i] = p[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (leftVec[i].namaPesanan <= rightVec[j].namaPesanan) {
+            p[k] = leftVec[i];
+            i++;
+        } else {
+            p[k] = rightVec[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        p[k] = leftVec[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        p[k] = rightVec[j];
+        j++;
+        k++;
     }
 }
