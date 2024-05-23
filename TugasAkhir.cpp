@@ -29,29 +29,63 @@ class Resto{
 
         void queue();
         void stack();
+
+        void pelanggan();
+        void admin();
 };
 
 int main(){
     Resto resto;
     int pilihan;
 
-    cout << '|' << string(75, '-')  << '|' << endl;
-    cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
-    cout << '|' << string(75, '-') << '|' << endl;
-    cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
-    cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
+    cout << "selamat datang aplikasi resto, silahkan anda pilih anda sebagai apa\n";
+    cout << "1. Admin\n";
+    cout << "2. Pelanggan\n";
+    cout << "Masukkan Pilihan Anda > ";
+    cin >> pilihan;
 
     switch (pilihan)
     {
     case 1:
-        resto.menuList();
+        resto.admin();
         break;
+    case 2:
+        resto.pelanggan();
     
     default:
         break;
     }
 
     return 0;
+}
+
+void Resto::admin(){
+    int pilihan;
+    cout << "Selamat datang admin, silahkan pilih menu anda\n";
+    cout << "1. Tampilkan antrian\n";
+    cout << "2. Tampilkan reservasi\n";
+    cout << "3. Tampikan Daftar Pesanan dan Pembayaran hari ini\n";
+}
+
+void Resto::pelanggan(){
+    int pilihan;
+    cout << '|' << string(75, '-')  << '|' << endl;
+    cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
+    cout << '|' << string(75, '-') << '|' << endl;
+    cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
+    cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
+    cout << "|3. Tampilkan Meja Kosong\n";
+    cout << "|4. Tampilkan Letak Meja di restauran\n";
+
+    switch (pilihan)
+    {
+    case 1:
+        menuList();
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void Resto::menuList(){
