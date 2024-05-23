@@ -110,6 +110,8 @@ class Resto{
 
         void pelanggan();
         void admin();
+        void tampilkanAntrian();
+        void tampilkanReservasi();
 };
 
 int main(){
@@ -162,10 +164,10 @@ void Resto::admin(){
 
     switch (pilihan) {
         case 1:
-            // Tampilkan antrian (implementasi sesuai kebutuhan)
+            tampilkanAntrian();
             break;
         case 2:
-            // Tampilkan reservasi (implementasi sesuai kebutuhan)
+            tampilkanReservasi();
             break;
         case 3:
             tampilkanPesanan();
@@ -297,12 +299,121 @@ void Resto::menuList(){
 
     // Display sorted orders
     cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
-    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + cornerLeft, '-') << endl;
+
+    for (const auto& pesanan : daftarP) {
+        cout << left << setw(nameWidth) << pesanan.namaPesanan << right << setw(priceWidth) << pesanan.harga << setw(jumlahWidth) << pesanan.jumlahPesanan << setw(totalWidth) << pesanan.totalHarga << endl;
+    }
+
+    // Display tree
+    cout << "\nTraversal Tree Pesanan (Total Harga):" << endl;
+    displayTree();
+}
+
+void Resto::tampilkanPesanan() {
+    if (daftarP.empty()) {
+        cout << "Belum ada pesanan." << endl;
+        return;
+    }
+
+    const int nameWidth = 20;
+    const int priceWidth = 10;
+    const int jumlahWidth = 8;
+    const int totalWidth = 12;
+
+    cout << left << string(19, '-') << " DAFTAR PESANAN " << right << string(20, '-') << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
-    for(int i = 0; i < daftarP.size(); i++){
+    for (int i = 0; i < daftarP.size(); i++) {
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
     }
+}
+
+void Resto::reservasiMeja() {
+    string nama, noHP;
+    int pilihan;
+
+    cout << "Masukkan Nama Anda: ";
+    cin.ignore();
+    getline(cin, nama);
+    cout << "Masukkan Nomor HP Anda: ";
+    getline(cin, noHP);
+
+    int nomerHP = stoi(noHP);
+
+    int i = hashFunction(nomerHP);
+
+    if (ruang[i].head != nullptr && ruang[i].head->name != "") {
+        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
+        cout << "1. Antri\n";
+        cout << "2. Pindah\n";
+        cin >> pilihan;
+    } else {
+        pilihan = 1;
+    }
+
+    hash(nama, nomerHP, pilihan);
+}
+
+void Resto::hash(string nama, int nomerHP, int pilihan) {
+    int index = hashFunction(nomerHP);
+    int attempt = 0;
+
+    if (pilihan == 1) {
+        int index = hashFunction(nomerHP);
+
+        node* newNode = new node;
+        newNode->name = nama;
+        newNode->key = nomerHP;
+        newNode->prev = nullptr;
+        newNode->next = nullptr;
+
+        if (ruang[index].head == nullptr) {
+            ruang[index].head = newNode;
+        } else {
+            node* temp = ruang[index].head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+            newNode->prev = temp;
+        }
+    } else if (pilihan == 2) {
+        index = quadraticProbing(nomerHP, attempt);
+
+        if (index != -1) {
+            node* newNode = new node;
+            newNode->name = nama;
+            newNode->key = nomerHP;
+            newNode->prev = nullptr;
+            newNode->next = nullptr;
+
+            ruang[index].head = newNode;
+        } else {
+            cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
+        }
+    }
+}
+
+int Resto::hashFunction(int nomerHP) {
+    return abs(nomerHP) % SIZE;
+}
+
+int Resto::quadraticProbing(int nomerHP, int attempt) {
+    int index = hashFunction(nomerHP);
+    int probeIndex = index;
+
+    for (int i = 1; i < SIZE; i++) {
+        probeIndex = (index + attempt * attempt) % SIZE;
+        if (ruang[probeIndex].head == nullptr) {
+            return probeIndex;
+        }
+        attempt++;
+    }
+
+    return -1; // Semua bucket terisi, tidak ada tempat untuk menambahkan data baru
 }
 
 void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
@@ -318,7 +429,7 @@ void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
     }
 }
 
-void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
+void Resto::merge(vector<pesanan>& p, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
@@ -352,112 +463,6 @@ void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
         p[k] = rightVec[j];
         j++;
         k++;
-    }
-}
-
-void Resto::reservasiMeja(){
-    string nama, noHP;
-    int pilihan;
-
-    cout << "Masukkan Nama Anda: ";
-    cin.ignore();
-    getline(cin, nama);
-    cout << "Masukkan Nomor HP Anda: ";
-    getline(cin, noHP);
-
-    int nomerHP = stoi(noHP);
-
-    int i = hashFunction(nomerHP);
-
-    if(ruang[i].head->name != ""){
-        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?";
-        cout << "1. Antri\n";
-        cout << "2. Pindah\n";
-        cin >> pilihan;
-    }
-
-    hash(nama, nomerHP, pilihan);
-}
-
-void Resto::hash(string nama, int nomerHP, int pilihan){
-    int index = hashFunction(nomerHP);
-    int attempt = 0;
-    
-    if(pilihan == 1){
-        int index = hashFunction(nomerHP);
-
-        node* newNode = new node;
-        newNode->name = nama;
-        newNode->key = nomerHP;
-        newNode->prev = nullptr;
-        newNode->next = nullptr;
-
-        if (ruang[index].head == nullptr) {
-            ruang[index].head = newNode;
-        } else {
-            node* temp = ruang[index].head;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            temp->next = newNode;
-            newNode->prev = temp;
-        }
-    }
-
-    else if(pilihan == 2){
-
-        index = quadraticProbing(nomerHP, attempt);
-
-        if (index != -1) {
-            node* newNode = new node;
-            newNode->name = nama;
-            newNode->key = nomerHP;
-            newNode->prev = nullptr;
-            newNode->next = nullptr;
-
-            ruang[index].head = newNode;
-        } else {
-            cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
-        }
-    }
-}
-
-int Resto::hashFunction(int nomerHP){
-    return abs(nomerHP) % SIZE;
-}
-
-int Resto::quadraticProbing(int nomerHP, int attempt) {
-    int index = hashFunction(nomerHP);
-    int probeIndex = index;
-
-    for (int i = 1; i < SIZE; i++) {
-        probeIndex = (index + attempt * attempt) % SIZE;
-        if (ruang[probeIndex].head == nullptr) {
-            return probeIndex;
-        }
-        attempt++;
-    }
-
-    return -1; // Semua bucket terisi, tidak ada tempat untuk menambahkan data baru
-}
-
-void Resto::tampilkanPesanan(){
-    if(daftarP.empty()){
-        cout << "Belum ada pesanan." << endl;
-        return;
-    }
-
-    const int nameWidth = 20;
-    const int priceWidth = 10;
-    const int jumlahWidth = 8;
-    const int totalWidth = 12;
-
-    cout << left << string(19, '-') << " DAFTAR PESANAN " << right << string(20, '-') << endl;
-    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
-    cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
-
-    for(int i = 0; i < daftarP.size(); i++){
-        cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
     }
 }
 
@@ -530,4 +535,33 @@ void Resto::createGraph() {
 
     cout << "DFS traversal: ";
     graph.dfs(0);
+}
+
+void Resto::tampilkanAntrian() {
+    if (queuePesanan.empty()) {
+        cout << "Tidak ada antrian saat ini." << endl;
+    } else {
+        cout << "Daftar antrian pesanan:" << endl;
+        queue<pesanan> tempQueue = queuePesanan;
+        while (!tempQueue.empty()) {
+            pesanan p = tempQueue.front();
+            tempQueue.pop();
+            cout << p.namaPesanan << " - Jumlah: " << p.jumlahPesanan << " - Total: " << p.totalHarga << endl;
+        }
+    }
+}
+
+void Resto::tampilkanReservasi() {
+    cout << "Daftar reservasi meja:" << endl;
+    for (int i = 0; i < SIZE; i++) {
+        if (ruang[i].head != nullptr) {
+            node* temp = ruang[i].head;
+            while (temp != nullptr) {
+                cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
+                temp = temp->next;
+            }
+        } else {
+            cout << "Meja " << i + 1 << ": Kosong" << endl;
+        }
+    }
 }
