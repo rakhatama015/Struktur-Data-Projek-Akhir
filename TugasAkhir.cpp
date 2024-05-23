@@ -4,12 +4,15 @@
 #include <cmath>
 #include <math.h>
 #include <iomanip>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
 #define SIZE 10
 
 class Resto{
+    private:
     private:
         struct pesanan{
             int jumlahPesanan;
@@ -26,11 +29,65 @@ class Resto{
         struct ruangan{
             node* head;
         };
+        struct TreeNode {
+            int data;
+            TreeNode* left;
+            TreeNode* right;
+            TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+        };
+        struct Graph {
+            vector<vector<int>> adjList;
+            Graph(int n) {
+                adjList.resize(n);
+            }
+            void addEdge(int u, int v) {
+                adjList[u].push_back(v);
+                adjList[v].push_back(u);
+            }
+            void bfs(int start) {
+                vector<bool> visited(adjList.size(), false);
+                queue<int> q;
+                q.push(start);
+                visited[start] = true;
+                while (!q.empty()) {
+                    int node = q.front();
+                    q.pop();
+                    cout << node << " ";
+                    for (int neighbor : adjList[node]) {
+                        if (!visited[neighbor]) {
+                            q.push(neighbor);
+                            visited[neighbor] = true;
+                        }
+                    }
+                }
+                cout << endl;
+            }
+            void dfsUtil(int node, vector<bool>& visited) {
+                visited[node] = true;
+                cout << node << " ";
+                for (int neighbor : adjList[node]) {
+                    if (!visited[neighbor]) {
+                        dfsUtil(neighbor, visited);
+                    }
+                }
+            }
+            void dfs(int start) {
+                vector<bool> visited(adjList.size(), false);
+                dfsUtil(start, visited);
+                cout << endl;
+            }
+        };
+
         int antrian;
         vector<pesanan> daftarP;
         ruangan ruang[SIZE];
+        stack<pesanan> stackPesanan;
+        queue<pesanan> queuePesanan;
+        TreeNode* treeRoot;
+        Graph graph;
 
     public:
+        Resto() : treeRoot(nullptr), graph(SIZE) {}
         void menuList();
         void pesanMenu();
         void tampilkanPesanan();
@@ -40,45 +97,72 @@ class Resto{
         int hashFunction(int nomerHP);
         int quadraticProbing(int nomerHP, int attempt);
         void sort();
-        void mergeSort(vector<pesanan>&, int left, int right) ;
+        void mergeSort(vector<pesanan>&, int left, int right);
         void merge(vector<pesanan>&, int left, int mid, int right);
 
-        void queue();
-        void stack();
+        void insertStack(pesanan p);
+        void insertQueue(pesanan p);
+        void searchPesanan(string nama);
+        TreeNode* insertTree(TreeNode* node, int data);
+        void inorder(TreeNode* node);
+        void preorder(TreeNode* node);
+        void postorder(TreeNode* node);
+        void displayTree();
+        void createGraph();
 
         void pelanggan();
         void admin();
+        void tampilkanAntrian();
+        void tampilkanReservasi();
 };
 
 int main(){
     Resto resto;
-    string nama, password, adminName, adminPass;
-    int pilihan;
+    string nama, password, adminName = "admin", adminPass = "password";
+    int pilihan, pilihan2;
 
-    cout << "selamat datang aplikasi resto, silahkan anda pilih anda sebagai apa\n";
-    cout << "1. Admin\n";
-    cout << "2. Pelanggan\n";
-    cout << "0. Keluar\n";
-    cout << "Masukkan Pilihan Anda > ";
+    cout << "|" << string(59, '-') << "|" << '\n';
+    cout << "|" << string(10, '=') << " SELAMAT DATANG DI APLIKASI RESTO KAMI " << string(10, '=') << "|" << '\n';
+    cout << "|" << string(59, '-') << "|" << '\n';
+    cout << "|1. Admin\n";
+    cout << "|2. Pelanggan\n";
+    cout << "|0. Keluar\n";
+    cout << "|Masukkan Pilihan Anda > ";
     cin >> pilihan;
 
     switch (pilihan)
     {
     case 1:
-        cout << "Masukkan Nama Anda: ";
-        getline(cin, nama);
-        cout << "Masukkan Password: ";
-        getline(cin, password);
 
-        if(nama == adminName && password == adminPass){
-            resto.admin();
-        }
-        else{
-            cout << "Sandi Salah\n";
-        }
+        do{
+            cout << "\nMasukkan Nama Anda: ";
+            cin.ignore();
+            getline(cin, nama);
+            cout << "Masukkan Password: ";
+            getline(cin, password);
+
+            if(nama == adminName && password == adminPass){
+                resto.admin();
+            }
+            else{
+                cout << "Sandi Salah\n";
+            }
+            cout << "1. Ulang\n";
+            cout << "0. Keluar\n";
+            cin >> pilihan2;
+        }while(pilihan2 != 0);
+
         break;
     case 2:
-        resto.pelanggan();
+
+        do{
+            cout << '\n';
+            resto.pelanggan();
+            cout << "1. Ulang\n";
+            cout << "0. Keluar\n";
+            cin >> pilihan2;
+        }while(pilihan2 != 0);
+
         break;
     case 0: 
         break;
@@ -95,6 +179,23 @@ void Resto::admin(){
     cout << "1. Tampilkan antrian\n";
     cout << "2. Tampilkan reservasi\n";
     cout << "3. Tampikan Daftar Pesanan dan Pembayaran hari ini\n";
+    cin >> pilihan;
+
+    switch (pilihan)
+    {
+    case 1:
+        tampilkanAntrian();
+        break;
+    case 2:
+        tampilkanReservasi();
+        break;
+    case 3:
+        tampilkanPesanan();
+        break;
+    default:
+        cout << "Pilihan tidak valid" << endl;
+        break;
+    }
 }
 
 void Resto::pelanggan(){
@@ -442,5 +543,105 @@ int Resto::quadraticProbing(int nomerHP, int attempt) {
     }
 
     return -1; // Semua bucket terisi, tidak ada tempat untuk menambahkan data baru
+}
+
+void Resto::insertStack(pesanan p) {
+    stackPesanan.push(p);
+}
+
+void Resto::insertQueue(pesanan p) {
+    queuePesanan.push(p);
+}
+
+Resto::TreeNode* Resto::insertTree(TreeNode* node, int data) {
+    if (node == nullptr) {
+        return new TreeNode(data);
+    }
+    if (data < node->data) {
+        node->left = insertTree(node->left, data);
+    } else {
+        node->right = insertTree(node->right, data);
+    }
+    return node;
+}
+
+void Resto::inorder(TreeNode* node) {
+    if (node != nullptr) {
+        inorder(node->left);
+        cout << node->data << " ";
+        inorder(node->right);
+    }
+}
+
+void Resto::preorder(TreeNode* node) {
+    if (node != nullptr) {
+        cout << node->data << " ";
+        preorder(node->left);
+        preorder(node->right);
+    }
+}
+
+void Resto::postorder(TreeNode* node) {
+    if (node != nullptr) {
+        postorder(node->left);
+        postorder(node->right);
+        cout << node->data << " ";
+    }
+}
+
+void Resto::displayTree() {
+    cout << "Inorder traversal: ";
+    inorder(treeRoot);
+    cout << endl;
+    cout << "Preorder traversal: ";
+    preorder(treeRoot);
+    cout << endl;
+    cout << "Postorder traversal: ";
+    postorder(treeRoot);
+    cout << endl;
+}
+
+void Resto::createGraph() {
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(1, 4);
+    graph.addEdge(2, 5);
+    graph.addEdge(2, 6);
+
+    cout << "BFS traversal: ";
+    graph.bfs(0);
+
+    cout << "DFS traversal: ";
+    graph.dfs(0);
+}
+
+void Resto::tampilkanAntrian() {
+    if (queuePesanan.empty()) {
+        cout << "Tidak ada antrian saat ini." << endl;
+    } else {
+        cout << "Daftar antrian pesanan:" << endl;
+        queue<pesanan> tempQueue = queuePesanan;
+        while (!tempQueue.empty()) {
+            pesanan p = tempQueue.front();
+            tempQueue.pop();
+            cout << p.namaPesanan << " - Jumlah: " << p.jumlahPesanan << " - Total: " << p.totalHarga << endl;
+        }
+    }
+}
+
+void Resto::tampilkanReservasi() {
+    cout << "Daftar reservasi meja:" << endl;
+    for (int i = 0; i < SIZE; i++) {
+        if (ruang[i].head != nullptr) {
+            node* temp = ruang[i].head;
+            while (temp != nullptr) {
+                cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
+                temp = temp->next;
+            }
+        } else {
+            cout << "Meja " << i + 1 << ": Kosong" << endl;
+        }
+    }
 }
 

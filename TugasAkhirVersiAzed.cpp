@@ -117,33 +117,50 @@ class Resto{
 int main(){
     Resto resto;
     string nama, password, adminName = "admin", adminPass = "password";
-    int pilihan;
+    int pilihan, pilihan2;
 
-    cout << "selamat datang aplikasi resto, silahkan anda pilih anda sebagai apa\n";
-    cout << "1. Admin\n";
-    cout << "2. Pelanggan\n";
-    cout << "0. Keluar\n";
-    cout << "Masukkan Pilihan Anda > ";
+    cout << "|" << string(59, '-') << "|" << '\n';
+    cout << "|" << string(10, '=') << " SELAMAT DATANG DI APLIKASI RESTO KAMI " << string(10, '=') << "|" << '\n';
+    cout << "|" << string(59, '-') << "|" << '\n';
+    cout << "|1. Admin\n";
+    cout << "|2. Pelanggan\n";
+    cout << "|0. Keluar\n";
+    cout << "|Masukkan Pilihan Anda > ";
     cin >> pilihan;
 
     switch (pilihan)
     {
     case 1:
-        cout << "Masukkan Nama Anda: ";
-        cin.ignore();
-        getline(cin, nama);
-        cout << "Masukkan Password: ";
-        getline(cin, password);
 
-        if(nama == adminName && password == adminPass){
-            resto.admin();
-        }
-        else{
-            cout << "Sandi Salah\n";
-        }
+        do{
+            cout << "\nMasukkan Nama Anda: ";
+            cin.ignore();
+            getline(cin, nama);
+            cout << "Masukkan Password: ";
+            getline(cin, password);
+
+            if(nama == adminName && password == adminPass){
+                resto.admin();
+            }
+            else{
+                cout << "Sandi Salah\n";
+            }
+            cout << "1. Ulang\n";
+            cout << "0. Keluar\n";
+            cin >> pilihan2;
+        }while(pilihan2 != 0);
+
         break;
     case 2:
-        resto.pelanggan();
+
+        do{
+            cout << '\n';
+            resto.pelanggan();
+            cout << "1. Ulang\n";
+            cout << "0. Keluar\n";
+            cin >> pilihan2;
+        }while(pilihan2 != 0);
+
         break;
     case 0: 
         break;
