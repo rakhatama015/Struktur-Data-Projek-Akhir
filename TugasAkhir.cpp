@@ -20,7 +20,7 @@ class Resto{
             string namaPesanan;
         };
         struct node{
-            int key;
+            string key;
             string name;
             node* prev;
             node* next;
@@ -29,7 +29,7 @@ class Resto{
             node* head;
         };
         struct Node{
-            int key;
+            string key;
             string name;
             node* prev;
             node* next;
@@ -103,8 +103,8 @@ class Resto{
         void tampilkanPesanan();
         void reservasiMeja();
 
-        void hash(string nama, int nomerHP, int pilihan);
-        int hashFunction(int nomerHP);
+        void hash(string nama, long int nomerHP, int pilihan, string noHP);
+        long int hashFunction(long int nomerHP);
         int quadraticProbing(int nomerHP, int attempt);
         void sort();
         void mergeSort(vector<pesanan>&, int left, int right);
@@ -124,6 +124,10 @@ class Resto{
         void admin();
         void tampilkanAntrian();
         void tampilkanReservasi();
+
+        void reservasiRuangan();
+        void hash2(string nama, long int nomerHP, int pilihan, string noHP);
+        int quadraticProbing2(int nomerHP, int attempt);
 };
 
 int main(){
@@ -172,6 +176,7 @@ int main(){
                 resto.pelanggan();
                 cout << "\n|1. Ulang\n";
                 cout << "|0. Keluar\n";
+                cout << "|> ";
                 cin >> pilihan2;
             }while(pilihan2 != 0);
 
@@ -230,8 +235,8 @@ void Resto::pelanggan(){
         cout << left << setw(37) << "|1. Menu Makanan" << right << setw(40) << '|' << endl;
         cout << left << setw(37) << "|2. Reservasi Meja" << right << setw(40) << '|' << endl;
         cout << left << setw(37) << "|3. Reservasi Ruangan" << right << setw(40) << '|' << '\n';
-        cout << left << setw(37) << "|3. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
-        cout << left << setw(37) << "|4. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|4. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|5. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
         cout << left << setw(37) << "|0. Keluar" << right << setw(40) << '|' << '\n';
         cout << "|Masukkan Pilihan Anda > ";
         cin >> pilihan;
@@ -245,6 +250,14 @@ void Resto::pelanggan(){
             reservasiMeja();
             break;
         case 3:
+            reservasiRuangan();
+            break;
+        case 4:
+            tampilkanReservasi();
+            break;
+        case 5:
+            break;
+        case 6:
             break;
         default:
             break;
@@ -536,40 +549,43 @@ void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
     }
 }
 
-void Resto::reservasiMeja(){
+void Resto::reservasiMeja() {
     string nama, noHP;
     int pilihan;
 
-    cout << "Masukkan Nama Anda: ";
+    cout << "|Masukkan Nama Anda: ";
     cin.ignore();
     getline(cin, nama);
-    cout << "Masukkan Nomor HP Anda: ";
+    cout << "|Masukkan Nomor HP Anda: ";
     getline(cin, noHP);
 
-    double nomerHP = stoll(noHP);
+    long int nomerHP = stoll(noHP);
 
-    int i = hashFunction(nomerHP);
+    long int index = hashFunction(nomerHP);
 
-    if(meja[i].head != nullptr && meja[i].head->name != ""){
+    if(meja[index].head != nullptr && meja[index].head->name != "") {
         cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
         cout << "1. Antri\n";
         cout << "2. Pindah\n";
         cin >> pilihan;
+    } else {
+        pilihan = 2; // Jika meja kosong, langsung pilih opsi pindah
     }
 
-    hash(nama, nomerHP, pilihan);
+    hash(nama, nomerHP, pilihan, noHP);
+
+    cout << "|Meja Berhasil Di Reservasi|\n";
+    cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
 }
 
-void Resto::hash(string nama, int nomerHP, int pilihan){
-    int index = hashFunction(nomerHP);
+void Resto::hash(string nama, long int nomerHP, int pilihan, string noHP) {
+    long int index = hashFunction(nomerHP);
     int attempt = 0;
     
-    if(pilihan == 1){
-        int index = hashFunction(nomerHP);
-
+    if(pilihan == 1) {
         node* newNode = new node;
         newNode->name = nama;
-        newNode->key = nomerHP;
+        newNode->key = noHP;
         newNode->prev = nullptr;
         newNode->next = nullptr;
 
@@ -583,27 +599,24 @@ void Resto::hash(string nama, int nomerHP, int pilihan){
             temp->next = newNode;
             newNode->prev = temp;
         }
-    }
-
-    else if(pilihan == 2){
-
+    } else if(pilihan == 2) {
         index = quadraticProbing(nomerHP, attempt);
 
         if (index != -1) {
             node* newNode = new node;
             newNode->name = nama;
-            newNode->key = nomerHP;
+            newNode->key = noHP;
             newNode->prev = nullptr;
             newNode->next = nullptr;
 
             meja[index].head = newNode;
         } else {
-            cout << "Hash table sudah penuh, tidak dapat menambahkan data baru." << endl;
+            cout << "Meja Sudah Penuh" << endl;
         }
     }
 }
 
-int Resto::hashFunction(int nomerHP){
+long int Resto::hashFunction(long int nomerHP){
     return abs(nomerHP) % SIZE;
 }
 
@@ -712,10 +725,15 @@ void Resto::tampilkanReservasi() {
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head != nullptr) {
             node* temp = meja[i].head;
+            cout << "Meja " << i + 1 << ": ";
             while (temp != nullptr) {
-                cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
+                cout << temp->name << " - No HP: " << temp->key;
+                if (temp->next != nullptr) {
+                    cout << ", ";
+                }
                 temp = temp->next;
             }
+            cout << endl;
         } else {
             cout << "Meja " << i + 1 << ": Kosong" << endl;
         }
@@ -739,5 +757,87 @@ void Resto::tampilkanPesanan() {
 
     for (int i = 0; i < daftarP.size(); i++) {
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
+    }
+}
+
+void Resto::reservasiRuangan() {
+    string nama, noHP;
+    int pilihan;
+
+    cout << "|Masukkan Nama Anda: ";
+    cin.ignore();
+    getline(cin, nama);
+    cout << "|Masukkan Nomor HP Anda: ";
+    getline(cin, noHP);
+
+    long int nomerHP = stoll(noHP);
+
+    long int index = hashFunction(nomerHP);
+
+    if(ruang[index].head != nullptr && ruang[index].head->name != "") {
+        cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
+        cout << "1. Antri\n";
+        cout << "2. Pindah\n";
+        cin >> pilihan;
+    } else {
+        pilihan = 2; // Jika meja kosong, langsung pilih opsi pindah
+    }
+
+    hash(nama, nomerHP, pilihan, noHP);
+
+    cout << "|Meja Berhasil Di Reservasi|\n";
+    cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
+}
+
+int Resto::quadraticProbing2(int nomerHP, int attempt) {
+    int index = hashFunction(nomerHP);
+    int probeIndex = index;
+
+    for (int i = 1; i < SIZE; i++) {
+        probeIndex = (index + attempt * attempt) % SIZE;
+        if (ruang[probeIndex].head == nullptr) {
+            return probeIndex;
+        }
+        attempt++;
+    }
+
+    return -1; // Semua bucket terisi, tidak ada tempat untuk menambahkan data baru
+}
+
+void Resto::hash2(string nama, long int nomerHP, int pilihan, string noHP) {
+    long int index = hashFunction(nomerHP);
+    int attempt = 0;
+    
+    if(pilihan == 1) {
+        Node* newNode = new Node;
+        newNode->name = nama;
+        newNode->key = noHP;
+        newNode->prev = nullptr;
+        newNode->next = nullptr;
+
+        if (ruang[index].head == nullptr) {
+            ruang[index].head = newNode;
+        } else {
+            Node* temp = ruang[index].head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+            newNode->prev = temp;
+        }
+    } else if(pilihan == 2) {
+        index = quadraticProbing(nomerHP, attempt);
+
+        if (index != -1) {
+            Node* newNode = new Node;
+            newNode->name = nama;
+            newNode->key = noHP;
+            newNode->prev = nullptr;
+            newNode->next = nullptr;
+
+            ruang[index].head = newNode;
+        } else {
+            cout << "Meja Sudah Penuh" << endl;
+        }
     }
 }
