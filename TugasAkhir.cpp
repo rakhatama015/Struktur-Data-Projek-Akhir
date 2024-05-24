@@ -536,7 +536,7 @@ void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
     }
 }
 
-void Resto::reservasiMeja(){
+void Resto::reservasiMeja() {
     string nama, noHP;
     int pilihan;
 
@@ -548,25 +548,25 @@ void Resto::reservasiMeja(){
 
     double nomerHP = stoll(noHP);
 
-    int i = hashFunction(nomerHP);
+    int index = hashFunction(nomerHP);
 
-    if(meja[i].head != nullptr && meja[i].head->name != ""){
+    if(meja[index].head != nullptr && meja[index].head->name != "") {
         cout << "Meja Sudah Di Pesan, Apakah Anda Ingin Antri Atau Dipindah Ke Meja Lain?\n";
         cout << "1. Antri\n";
         cout << "2. Pindah\n";
         cin >> pilihan;
+    } else {
+        pilihan = 2; // Jika meja kosong, langsung pilih opsi pindah
     }
 
     hash(nama, nomerHP, pilihan);
 }
 
-void Resto::hash(string nama, int nomerHP, int pilihan){
+void Resto::hash(string nama, int nomerHP, int pilihan) {
     int index = hashFunction(nomerHP);
     int attempt = 0;
     
-    if(pilihan == 1){
-        int index = hashFunction(nomerHP);
-
+    if(pilihan == 1) {
         node* newNode = new node;
         newNode->name = nama;
         newNode->key = nomerHP;
@@ -583,10 +583,7 @@ void Resto::hash(string nama, int nomerHP, int pilihan){
             temp->next = newNode;
             newNode->prev = temp;
         }
-    }
-
-    else if(pilihan == 2){
-
+    } else if(pilihan == 2) {
         index = quadraticProbing(nomerHP, attempt);
 
         if (index != -1) {
@@ -712,10 +709,15 @@ void Resto::tampilkanReservasi() {
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head != nullptr) {
             node* temp = meja[i].head;
+            cout << "Meja " << i + 1 << ": ";
             while (temp != nullptr) {
-                cout << "Meja " << i + 1 << ": " << temp->name << " - No HP: " << temp->key << endl;
+                cout << temp->name << " - No HP: " << temp->key;
+                if (temp->next != nullptr) {
+                    cout << ", ";
+                }
                 temp = temp->next;
             }
+            cout << endl;
         } else {
             cout << "Meja " << i + 1 << ": Kosong" << endl;
         }
