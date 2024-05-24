@@ -170,8 +170,8 @@ int main(){
             do{
                 cout << '\n';
                 resto.pelanggan();
-                cout << "1. Ulang\n";
-                cout << "0. Keluar\n";
+                cout << "\n|1. Ulang\n";
+                cout << "|0. Keluar\n";
                 cin >> pilihan2;
             }while(pilihan2 != 0);
 
@@ -227,12 +227,12 @@ void Resto::pelanggan(){
         cout << '|' << string(75, '-')  << '|' << endl;
         cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
         cout << '|' << string(75, '-') << '|' << endl;
-        cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
-        cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
-        cout << "|3. Reservasi Ruangan\n";
-        cout << "|3. Tampilkan Meja Kosong\n";
-        cout << "|4. Tampilkan Letak Meja di restauran\n";
-        cout << "|0. Keluar\n";
+        cout << left << setw(37) << "|1. Menu Makanan" << right << setw(40) << '|' << endl;
+        cout << left << setw(37) << "|2. Reservasi Meja" << right << setw(40) << '|' << endl;
+        cout << left << setw(37) << "|3. Reservasi Ruangan" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|3. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|4. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|0. Keluar" << right << setw(40) << '|' << '\n';
         cout << "|Masukkan Pilihan Anda > ";
         cin >> pilihan;
 
@@ -695,9 +695,9 @@ void Resto::createGraph() {
 
 void Resto::tampilkanAntrian() {
     if (queuePesanan.empty()) {
-        cout << "Tidak ada antrian saat ini." << endl;
+        cout << '\n' << string(10, '-') << "Tidak ada antrian saat ini." << string(10, '-') << endl;
     } else {
-        cout << "Daftar antrian pesanan:" << endl;
+        cout << '\n' << string(10, '-') <<"Daftar antrian pesanan:" << string(10, '-') << endl;
         queue<pesanan> tempQueue = queuePesanan;
         while (!tempQueue.empty()) {
             pesanan p = tempQueue.front();
