@@ -230,8 +230,8 @@ void Resto::pelanggan(){
         cout << left << setw(37) << "|1. Menu Makanan" << right << setw(40) << '|' << endl;
         cout << left << setw(37) << "|2. Reservasi Meja" << right << setw(40) << '|' << endl;
         cout << left << setw(37) << "|3. Reservasi Ruangan" << right << setw(40) << '|' << '\n';
-        cout << left << setw(37) << "|3. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
-        cout << left << setw(37) << "|4. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|4. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|5. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
         cout << left << setw(37) << "|0. Keluar" << right << setw(40) << '|' << '\n';
         cout << "|Masukkan Pilihan Anda > ";
         cin >> pilihan;
@@ -245,6 +245,10 @@ void Resto::pelanggan(){
             reservasiMeja();
             break;
         case 3:
+            break;
+        case 4:
+            break;
+        case 5:
             break;
         default:
             break;
