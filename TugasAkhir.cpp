@@ -131,114 +131,129 @@ int main(){
     string nama, password, adminName = "admin", adminPass = "password";
     int pilihan, pilihan2;
 
-    cout << "|" << string(59, '-') << "|" << '\n';
-    cout << "|" << string(10, '=') << " SELAMAT DATANG DI APLIKASI RESTO KAMI " << string(10, '=') << "|" << '\n';
-    cout << "|" << string(59, '-') << "|" << '\n';
-    cout << "|1. Admin\n";
-    cout << "|2. Pelanggan\n";
-    cout << "|0. Keluar\n";
-    cout << "|Masukkan Pilihan Anda > ";
-    cin >> pilihan;
+    do{
+        cout << "|" << string(59, '-') << "|" << '\n';
+        cout << "|" << string(10, '=') << " SELAMAT DATANG DI APLIKASI RESTO KAMI " << string(10, '=') << "|" << '\n';
+        cout << "|" << string(59, '-') << "|" << '\n';
+        cout << "|1. Admin\n";
+        cout << "|2. Pelanggan\n";
+        cout << "|0. Keluar\n";
+        cout << "|Masukkan Pilihan Anda > ";
+        cin >> pilihan;
 
-    switch (pilihan)
-    {
-    case 1:
+        switch (pilihan)
+        {
+        case 1:
 
-        do{
-            cout << "\nMasukkan Nama Anda: ";
-            cin.ignore();
-            getline(cin, nama);
-            cout << "Masukkan Password: ";
-            getline(cin, password);
+            do{
+                cout << "\n|Masukkan Nama Anda: ";
+                cin.ignore();
+                getline(cin, nama);
+                cout << "|Masukkan Password: ";
+                getline(cin, password);
 
-            if(nama == adminName && password == adminPass){
-                resto.admin();
-            }
-            else{
-                cout << "Sandi Salah\n";
-            }
-            cout << "1. Ulang\n";
-            cout << "0. Keluar\n";
-            cin >> pilihan2;
-        }while(pilihan2 != 0);
+                if(nama == adminName && password == adminPass){
+                    resto.admin();
+                }
+                else{
+                    cout << "Sandi Salah\n";
+                }
+                cout << "\n|1. Ulang\n";
+                cout << "|0. Keluar\n";
+                cout << "|> ";
+                cin >> pilihan2;
+            }while(pilihan2 != 0);
 
-        break;
-    case 2:
+            break;
+        case 2:
 
-        do{
-            cout << '\n';
-            resto.pelanggan();
-            cout << "1. Ulang\n";
-            cout << "0. Keluar\n";
-            cin >> pilihan2;
-        }while(pilihan2 != 0);
+            do{
+                cout << '\n';
+                resto.pelanggan();
+                cout << "1. Ulang\n";
+                cout << "0. Keluar\n";
+                cin >> pilihan2;
+            }while(pilihan2 != 0);
 
-        break;
-    case 0: 
-        break;
-    default:
-        break;
-    }
+            break;
+        case 0: 
+            cout << '\n' << string(10, '-') << " Anda Memilih Keluar " << string(10, '-') << '\n';
+            break;
+        default:
+            break;
+        }
+    }while(pilihan != 0);
 
     return 0;
 }
 
 void Resto::admin(){
     int pilihan;
-    cout << "Selamat datang admin, silahkan pilih menu anda\n";
-    cout << "1. Tampilkan antrian\n";
-    cout << "2. Tampilkan reservasi\n";
-    cout << "3. Tampikan Daftar Pesanan dan Pembayaran hari ini\n";
-    cin >> pilihan;
+    do{
+        cout << endl;
+        cout << '|' << string(42, '=') << '|' <<'\n';
+        cout << '|' << string(10, '=') << " SELAMAT DATANG ADMIN " << string(10, '=') << '|' <<'\n';
+        cout << '|' << string(42, '=') << '|' <<'\n';
+        cout << "|1. Tampilkan antrian\n";
+        cout << "|2. Tampilkan reservasi\n";
+        cout << "|3. Tampikan Daftar Pesanan dan Pembayaran hari ini\n";
+        cout << "|0. Keluar\n";
+        cout << "|Masukkan Pilihan > ";
+        cin >> pilihan;
 
-    switch (pilihan)
-    {
-    case 1:
-        tampilkanAntrian();
-        break;
-    case 2:
-        tampilkanReservasi();
-        break;
-    case 3:
-        tampilkanPesanan();
-        break;
-    default:
-        cout << "Pilihan tidak valid" << endl;
-        break;
-    }
+        switch (pilihan)
+        {
+        case 1:
+            tampilkanAntrian();
+            break;
+        case 2:
+            tampilkanReservasi();
+            break;
+        case 3:
+            tampilkanPesanan();
+            break;
+        case 0:
+            break;
+        default:
+            cout << "Pilihan tidak valid" << endl;
+            break;
+        }
+    }while(pilihan != 0);
 }
 
 void Resto::pelanggan(){
     int pilihan;
-    cout << '|' << string(75, '-')  << '|' << endl;
-    cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
-    cout << '|' << string(75, '-') << '|' << endl;
-    cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
-    cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
-    cout << "|3. Reservasi Ruangan\n";
-    cout << "|3. Tampilkan Meja Kosong\n";
-    cout << "|4. Tampilkan Letak Meja di restauran\n";
-    cout << "|0. Keluar\n";
-    cout << "|Masukkan Pilihan Anda > ";
-    cin >> pilihan;
+    do{
+        cout << '|' << string(75, '-')  << '|' << endl;
+        cout << '|' << string(20, '=') << " SELAMAT DATANG DI RESTAURANT KAMI " << string(20, '=') << '|' << endl;
+        cout << '|' << string(75, '-') << '|' << endl;
+        cout << "|1. Menu Makanan" << right << setw(61) << '|' << endl;
+        cout << "|2. Reservasi Meja" << right << setw(61) << '|' << endl;
+        cout << "|3. Reservasi Ruangan\n";
+        cout << "|3. Tampilkan Meja Kosong\n";
+        cout << "|4. Tampilkan Letak Meja di restauran\n";
+        cout << "|0. Keluar\n";
+        cout << "|Masukkan Pilihan Anda > ";
+        cin >> pilihan;
 
-    switch (pilihan)
-    {
-    case 1:
-        menuList();
-        break;
-    case 2:
-        reservasiMeja();
-        break;
-    case 3:
-        break;
-    default:
-        break;
-    }
+        switch (pilihan)
+        {
+        case 1:
+            menuList();
+            break;
+        case 2:
+            reservasiMeja();
+            break;
+        case 3:
+            break;
+        default:
+            break;
+        }
+    }while(pilihan != 0);
 }
 
 void Resto::menuList(){
-    int pilihan, jumlah, harga, total, attempt = 0;
+    int pilihan, jumlah, harga, total = 0, attempt = 0;
     string nama;
     pesanan p;
 
@@ -272,7 +287,7 @@ void Resto::menuList(){
             nama = "Nasi Goreng";
 
             cout << "|Anda Memilih Nasi Goreng Jawa\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
             
             p.harga = harga;
@@ -292,7 +307,7 @@ void Resto::menuList(){
             nama = "Nasi Goreng Ayam";
 
             cout << "|Anda Memilih Nasi Goreng Ayam\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -310,7 +325,7 @@ void Resto::menuList(){
         case 3:
             harga = 10000;
             cout << "|Anda Memilih Mie Ayam\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -329,7 +344,7 @@ void Resto::menuList(){
             harga = 10000;
             nama = "Mie Ayam Kuah";
             cout << "|Anda Memilih Mie Ayam Kuah\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -349,7 +364,7 @@ void Resto::menuList(){
             nama = "Mie Goreng";
 
             cout << "|Anda Memilih Mie Goreng\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -368,7 +383,7 @@ void Resto::menuList(){
             nama = "Nasi Uduk";
 
             cout << "|Anda Memilih Nasi Uduk\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -387,7 +402,7 @@ void Resto::menuList(){
             nama = "Nasi Liwet";
 
             cout << "|Anda Memilih Nasi Liwet\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -406,7 +421,7 @@ void Resto::menuList(){
             nama = "Soto Ayam";
 
             cout << "|Anda Memilih Soto Ayam\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
@@ -425,7 +440,7 @@ void Resto::menuList(){
             nama = "Rawon";
 
             cout << "|Anda Memilih Rawon\n";
-            cout << "Masukkan Jumlah Yang Ingin Dipesan: ";
+            cout << "|Masukkan Jumlah Yang Ingin Dipesan: ";
             cin >> jumlah;
 
             p.harga = harga;
