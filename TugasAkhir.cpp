@@ -704,7 +704,7 @@ void Resto::inorder(TreeNode* node) {
 
 void Resto::preorder(TreeNode* node) {
     if (node != nullptr) {
-        cout << '- ' << node->data << endl;
+        cout << "- " << node->data << endl;
         preorder(node->left);
         preorder(node->right);
     }
@@ -719,15 +719,11 @@ void Resto::postorder(TreeNode* node) {
 }
 
 void Resto::displayTree() {
-    // cout << "Inorder traversal: ";
-    // inorder(treeRoot);
-    // cout << endl;
-    cout << "Uang Yang Masuk: ";
+    
+    cout <<"Uang Yang Masuk: \n";
     preorder(treeRoot);
     cout << endl;
-    // cout << "Postorder traversal: ";
-    // postorder(treeRoot);
-    // cout << endl;
+    
 }
 void Resto::tampilkanLetakMeja(){
     cout << "\nLetak Meja di Restoran:" << endl;
