@@ -828,7 +828,7 @@ void Resto::tampilkanReservasiRuangan() {
 }
 
 void Resto::tampilkanPesanan() {
-    if (daftarP.empty()) {
+    if (daftarP[0].namaPesanan == "") {
         cout << "\nBelum Ada Pesanan." << endl;
         return;
     }
@@ -930,3 +930,7 @@ void Resto::hash2(string nama, long int nomerHP, int pilihan, string noHP) {
         }
     }
 }
+
+
+
+
