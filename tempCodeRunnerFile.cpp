@@ -1,1 +1,1 @@
-hash
+display
