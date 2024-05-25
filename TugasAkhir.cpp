@@ -526,6 +526,7 @@ void Resto::menuList(){
     }
 
     cout << left << string(50, '-') << endl;
+    cout << "\nTotal: " << right << setw(46) << total;
 
 
 }
