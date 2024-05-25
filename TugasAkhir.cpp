@@ -133,6 +133,7 @@ class Resto{
         void inorder(TreeNode* node);
         void preorder(TreeNode* node);
         void postorder(TreeNode* node);
+        void displayTree();
         void createGraph();
 
         void pelanggan();
@@ -148,6 +149,7 @@ class Resto{
         void tampilkanLetakMeja();
         int sumTree(TreeNode* node);
         int getTotalIncome();
+        void tampilkanRuangKosong();
 };
 
 int main(){
@@ -237,6 +239,7 @@ void Resto::admin(){
             tampilkanPesanan();
             break;
         case 5:
+            displayTree();
             cout << "\nTotal uang masuk hari ini: " << getTotalIncome() << " Rupiah" << endl;  // Tambahkan ini
             break;
         case 0:
@@ -258,7 +261,8 @@ void Resto::pelanggan(){
         cout << left << setw(37) << "|2. Reservasi Meja" << right << setw(40) << '|' << endl;
         cout << left << setw(37) << "|3. Reservasi Ruangan" << right << setw(40) << '|' << '\n';
         cout << left << setw(37) << "|4. Tampilkan Meja Kosong" << right << setw(40) << '|' << '\n';
-        cout << left << setw(37) << "|5. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|5. Tampilkan Ruang Kosong" << right << setw(40) << '|' << '\n';
+        cout << left << setw(37) << "|6. Tampilkan Letak Meja di restauran" << right << setw(40) << '|' << '\n';
         cout << left << setw(37) << "|0. Keluar" << right << setw(40) << '|' << '\n';
         cout << "|Masukkan Pilihan Anda > ";
         cin >> pilihan;
@@ -278,6 +282,9 @@ void Resto::pelanggan(){
             tampilkanMejaKosong();
             break;
         case 5:
+            tampilkanRuangKosong();
+            break;
+        case 6:
             tampilkanLetakMeja();
             break;
         case 0:
@@ -517,7 +524,7 @@ void Resto::menuList(){
     mergeSort(daftarP, 0, daftarP.size() - 1);
 
     cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
-    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
     for(int i = 0; i < daftarP.size(); i++){
@@ -526,8 +533,8 @@ void Resto::menuList(){
     }
 
     cout << left << string(50, '-') << endl;
-    cout << "\nTotal: " << right << setw(46) << total;
 
+    cout << "\nTotal: " << right << setw(46) << total << endl;
 
 }
 
@@ -697,7 +704,7 @@ void Resto::inorder(TreeNode* node) {
 
 void Resto::preorder(TreeNode* node) {
     if (node != nullptr) {
-        cout << node->data << " ";
+        cout << '- ' << node->data << endl;
         preorder(node->left);
         preorder(node->right);
     }
@@ -711,7 +718,17 @@ void Resto::postorder(TreeNode* node) {
     }
 }
 
-
+void Resto::displayTree() {
+    // cout << "Inorder traversal: ";
+    // inorder(treeRoot);
+    // cout << endl;
+    cout << "Uang Yang Masuk: ";
+    preorder(treeRoot);
+    cout << endl;
+    // cout << "Postorder traversal: ";
+    // postorder(treeRoot);
+    // cout << endl;
+}
 void Resto::tampilkanLetakMeja(){
     cout << "\nLetak Meja di Restoran:" << endl;
     graph.bfs(0); 
@@ -753,6 +770,20 @@ void Resto::tampilkanMejaKosong() {
     }
     if (!adaMejaKosong) {
         cout << "Tidak ada meja kosong." << endl;
+    }
+}
+
+void Resto::tampilkanRuangKosong() {
+    cout << "\nDaftar meja kosong:" << endl;
+    bool adaMejaKosong = false;
+    for (int i = 0; i < SIZE; i++) {
+        if (ruang[i].head == nullptr) {
+            cout << "Ruang " << i + 1 << endl;
+            adaMejaKosong = true;
+        }
+    }
+    if (!adaMejaKosong) {
+        cout << "Tidak ada ruang kosong." << endl;
     }
 }
 
