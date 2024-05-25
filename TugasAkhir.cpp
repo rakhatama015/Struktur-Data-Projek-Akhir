@@ -178,9 +178,10 @@ int main(){
 
                 if(nama == adminName && password == adminPass){
                     resto.admin();
+                    pilihan2 = 0;
                 }
                 else{
-                    cout << "Sandi Salah\n";
+                    cout << "\nSandi Salah\n";
                     cout << "\n|1. Ulang\n";
                     cout << "|0. Keluar\n";
                     cout << "|> ";
@@ -278,9 +279,10 @@ void Resto::pelanggan(){
         case 0:
             break;
         default:
-            cout << "Pilihan Tidak Valid\n";
+            cout << "\nPilihan Tidak Valid\n";
             break;
         }
+        cout << endl;
     }while(pilihan != 0);
 }
 
@@ -296,7 +298,7 @@ void Resto::menuList(){
     const int cornerLeft = 3;
 
     do{
-        cout << "|-------------------------------------------|\n";
+        cout << "\n|-------------------------------------------|\n";
         cout << "|=============== MENU MAKANAN ==============|\n";
         cout << "|-------------------------------------------|\n";
         cout << "|1. Nasi Goreng Jawa              Rp. 15.000|\n";
@@ -488,7 +490,7 @@ void Resto::menuList(){
 
             break;
         case 0:
-            cout << "Pesanan Anda Telah Diterima\n";
+            cout << "\nPesanan Anda Telah Diterima\n";
             break;
         default:
             break;
@@ -572,7 +574,7 @@ void Resto::reservasiMeja() {
     string nama, noHP;
     int pilihan;
 
-    cout << "|Masukkan Nama Anda: ";
+    cout << "\n|Masukkan Nama Anda: ";
     cin.ignore();
     getline(cin, nama);
     cout << "|Masukkan Nomor HP Anda [4-Digit Terakhir]: ";
@@ -593,7 +595,7 @@ void Resto::reservasiMeja() {
 
     hash(nama, nomerHP, pilihan, noHP);
 
-    cout << "|Meja Berhasil Di Reservasi |\n";
+    cout << "\n|Meja Berhasil Di Reservasi |\n";
     cout << "|Anda Mendapat Meja Nomor " << index + 1 << " |\n";
 }
 
@@ -710,7 +712,7 @@ void Resto::displayTree() {
     cout << endl;
 }
 void Resto::tampilkanLetakMeja(){
-    cout << "Letak Meja di Restoran:" << endl;
+    cout << "\nLetak Meja di Restoran:" << endl;
     graph.bfs(0); 
 }
 void Resto::createGraph() {
@@ -746,7 +748,7 @@ void Resto::tampilkanAntrian() {
     }
 }
 void Resto::tampilkanMejaKosong() {
-    cout << "Daftar meja kosong:" << endl;
+    cout << "\nDaftar meja kosong:" << endl;
     bool adaMejaKosong = false;
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head == nullptr) {
@@ -760,7 +762,7 @@ void Resto::tampilkanMejaKosong() {
 }
 
 void Resto::tampilkanReservasiMeja() {
-    cout << "Daftar Reservasi Meja:" << endl;
+    cout << "\nDaftar Reservasi Meja:" << endl;
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head != nullptr) {
             node* temp = meja[i].head;
@@ -780,7 +782,7 @@ void Resto::tampilkanReservasiMeja() {
 }
 
 void Resto::tampilkanReservasiRuangan() {
-    cout << "Daftar Reservasi Ruang:" << endl;
+    cout << "\nDaftar Reservasi Ruang:" << endl;
     for (int i = 0; i < SIZE; i++) {
         if (ruang[i].head != nullptr) {
             Node* temp = ruang[i].head;
@@ -801,7 +803,7 @@ void Resto::tampilkanReservasiRuangan() {
 
 void Resto::tampilkanPesanan() {
     if (daftarP.empty()) {
-        cout << "Belum ada pesanan." << endl;
+        cout << "\nBelum Ada Pesanan." << endl;
         return;
     }
 
@@ -810,7 +812,7 @@ void Resto::tampilkanPesanan() {
     const int jumlahWidth = 8;
     const int totalWidth = 12;
 
-    cout << left << string(19, '-') << " DAFTAR PESANAN " << right << string(20, '-') << endl;
+    cout << left << string(19, '-') << " \nDAFTAR PESANAN " << right << string(20, '-') << endl;
     cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
@@ -823,7 +825,7 @@ void Resto::reservasiRuangan() {
     string nama, noHP;
     int pilihan;
 
-    cout << "|Masukkan Nama Anda: ";
+    cout << "\n|Masukkan Nama Anda: ";
     cin.ignore();
     getline(cin, nama);
     cout << "|Masukkan Nomor HP Anda: ";
@@ -844,8 +846,8 @@ void Resto::reservasiRuangan() {
 
     hash2(nama, nomerHP, pilihan, noHP);
 
-    cout << "|Meja Berhasil Di Reservasi|\n";
-    cout << "|Anda Mendapat Meja Nomor " << index + 1 << " |\n";
+    cout << "\n|Ruangan Berhasil Di Reservasi|\n";
+    cout << "|Anda Mendapat Ruang Nomor " << index + 1 << " |\n";
 }
 
 int Resto::quadraticProbing2(int nomerHP, int attempt) {
