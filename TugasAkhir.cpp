@@ -841,4 +841,3 @@ void Resto::hash2(string nama, long int nomerHP, int pilihan, string noHP) {
             cout << "Meja Sudah Penuh" << endl;
         }
     }
-}
