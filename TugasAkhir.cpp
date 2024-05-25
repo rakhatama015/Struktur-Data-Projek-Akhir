@@ -124,7 +124,8 @@ class Resto{
         void pelanggan();
         void admin();
         void tampilkanAntrian();
-        void tampilkanReservasi();
+        void tampilkanReservasiMeja();
+        void tampilkanReservasiRuangan();
 
         void reservasiRuangan();
         void hash2(string nama, long int nomerHP, int pilihan, string noHP);
@@ -149,7 +150,7 @@ int main(){
         switch (pilihan)
         {
         case 1:
-
+            pilihan2 = 0;
             do{
                 cout << "\n|Masukkan Nama Anda: ";
                 cin.ignore();
@@ -162,25 +163,16 @@ int main(){
                 }
                 else{
                     cout << "Sandi Salah\n";
+                    cout << "\n|1. Ulang\n";
+                    cout << "|0. Keluar\n";
+                    cout << "|> ";
+                    cin >> pilihan2;
                 }
-                cout << "\n|1. Ulang\n";
-                cout << "|0. Keluar\n";
-                cout << "|> ";
-                cin >> pilihan2;
             }while(pilihan2 != 0);
-
             break;
         case 2:
-
-            do{
-                cout << '\n';
-                resto.pelanggan();
-                cout << "\n|1. Ulang\n";
-                cout << "|0. Keluar\n";
-                cout << "|> ";
-                cin >> pilihan2;
-            }while(pilihan2 != 0);
-
+            cout << '\n';
+            resto.pelanggan();
             break;
         case 0: 
             cout << '\n' << string(10, '-') << " Anda Memilih Keluar " << string(10, '-') << '\n';
@@ -200,9 +192,10 @@ void Resto::admin(){
         cout << '|' << string(42, '=') << '|' <<'\n';
         cout << '|' << string(10, '=') << " SELAMAT DATANG ADMIN " << string(10, '=') << '|' <<'\n';
         cout << '|' << string(42, '=') << '|' <<'\n';
-        cout << "|1. Tampilkan antrian\n";
-        cout << "|2. Tampilkan reservasi\n";
-        cout << "|3. Tampikan Daftar Pesanan dan Pembayaran hari ini\n";
+        cout << "|1. Tampilkan Antrian\n";
+        cout << "|2. Tampilkan Reservasi Meja\n";
+        cout << "|3. Tampilkan Reservasi Ruangan\n";
+        cout << "|4. Tampikan Daftar Pesanan dan Pembayaran Hari Ini\n";
         cout << "|0. Keluar\n";
         cout << "|Masukkan Pilihan > ";
         cin >> pilihan;
@@ -213,9 +206,12 @@ void Resto::admin(){
             tampilkanAntrian();
             break;
         case 2:
-            tampilkanReservasi();
+            tampilkanReservasiMeja();
             break;
         case 3:
+            tampilkanReservasiRuangan();
+            break;
+        case 4:
             tampilkanPesanan();
             break;
         case 0:
@@ -254,13 +250,15 @@ void Resto::pelanggan(){
             reservasiRuangan();
             break;
         case 4:
-            tampilkanReservasi();
+            tampilkanReservasiMeja();
             break;
         case 5:
+            tampilkanReservasiRuangan();
             break;
-        case 6:
+        case 0:
             break;
         default:
+            cout << "Input Tidak Valid\n";
             break;
         }
     }while(pilihan != 0);
@@ -557,7 +555,7 @@ void Resto::reservasiMeja() {
     cout << "|Masukkan Nama Anda: ";
     cin.ignore();
     getline(cin, nama);
-    cout << "|Masukkan Nomor HP Anda: ";
+    cout << "|Masukkan Nomor HP Anda [4-Digit Terakhir]: ";
     getline(cin, noHP);
 
     long int nomerHP = stoll(noHP);
@@ -575,7 +573,7 @@ void Resto::reservasiMeja() {
 
     hash(nama, nomerHP, pilihan, noHP);
 
-    cout << "|Meja Berhasil Di Reservasi|\n";
+    cout << "|Meja Berhasil Di Reservasi |\n";
     cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
 }
 
@@ -721,7 +719,7 @@ void Resto::tampilkanAntrian() {
     }
 }
 
-void Resto::tampilkanReservasi() {
+void Resto::tampilkanReservasiMeja() {
     cout << "Daftar reservasi meja:" << endl;
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head != nullptr) {
@@ -737,6 +735,26 @@ void Resto::tampilkanReservasi() {
             cout << endl;
         } else {
             cout << "Meja " << i + 1 << ": Kosong" << endl;
+        }
+    }
+}
+
+void Resto::tampilkanReservasiRuangan() {
+    cout << "Daftar reservasi meja:" << endl;
+    for (int i = 0; i < SIZE; i++) {
+        if (ruang[i].head != nullptr) {
+            Node* temp = ruang[i].head;
+            cout << "Meja " << i + 1 << ": ";
+            while (temp != nullptr) {
+                cout << temp->name << " - No HP: " << temp->key;
+                if (temp->next != nullptr) {
+                    cout << ", ";
+                }
+                temp = temp->next;
+            }
+            cout << endl;
+        } else {
+            cout << "Ruang " << i + 1 << ": Kosong" << endl;
         }
     }
 }
@@ -841,3 +859,4 @@ void Resto::hash2(string nama, long int nomerHP, int pilihan, string noHP) {
             cout << "Meja Sudah Penuh" << endl;
         }
     }
+}
