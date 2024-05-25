@@ -101,7 +101,7 @@ class Resto{
         };
 
         int antrian;
-        vector<pesanan> daftarP;
+        pesanan daftarP[100];
 
         stack<pesanan> stackPesanan;
         queue<pesanan> queuePesanan;
@@ -124,8 +124,8 @@ class Resto{
         long int hashFunction(long int nomerHP);
         int quadraticProbing(int nomerHP, int attempt);
         void sort();
-        void mergeSort(vector<pesanan>&, int left, int right);
-        void merge(vector<pesanan>&, int left, int mid, int right);
+        void mergeSort(pesanan daftarP[], int left, int right);
+        void merge(pesanan daftarP[], int left, int mid, int right);
 
         void insertStack(pesanan p);
         void insertQueue(pesanan p);
@@ -350,7 +350,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
             // Insert into tree
@@ -370,7 +370,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -388,7 +388,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -407,7 +407,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -427,7 +427,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -446,7 +446,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p); 
                         // Insert into tree
@@ -465,7 +465,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -484,7 +484,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -503,7 +503,7 @@ void Resto::menuList(){
             p.jumlahPesanan = jumlah;
             p.namaPesanan = nama;
 
-            daftarP.push_back(p);
+            daftarP[attempt] = p;
             insertStack(p);
             insertQueue(p);
                         // Insert into tree
@@ -517,17 +517,21 @@ void Resto::menuList(){
             break;
         }
 
+        attempt++;
+
     }while(pilihan != 0);
 
     antrian++;
 
-    mergeSort(daftarP, 0, daftarP.size() - 1);
+    int size = sizeof(daftarP)/sizeof(daftarP[0]);
+
+    mergeSort(daftarP, 0, size - 1);
 
     cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
     cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
-    for(int i = 0; i < daftarP.size(); i++){
+    for(int i = 0; i < size; i++){
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
         total += daftarP[i].totalHarga;
     }
@@ -538,7 +542,7 @@ void Resto::menuList(){
 
 }
 
-void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
+void Resto::mergeSort(pesanan p[], int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
 
@@ -551,7 +555,7 @@ void Resto::mergeSort(vector<pesanan>& p, int left, int right) {
     }
 }
 
-void Resto::merge(vector<pesanan>& p, int left, int mid, int right){
+void Resto::merge(pesanan p[], int left, int mid, int right){
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
@@ -838,7 +842,9 @@ void Resto::tampilkanPesanan() {
     cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
-    for (int i = 0; i < daftarP.size(); i++) {
+    int size = sizeof(daftarP)/sizeof(daftarP[0]);
+
+    for (int i = 0; i < size; i++) {
         cout << i + 1 << ". " << left << setw(nameWidth) << daftarP[i].namaPesanan << right << setw(priceWidth) << daftarP[i].harga << setw(jumlahWidth) << daftarP[i].jumlahPesanan << setw(totalWidth) << daftarP[i].totalHarga << endl;
     }
 }
