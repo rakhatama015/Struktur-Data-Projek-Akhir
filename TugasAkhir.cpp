@@ -133,7 +133,6 @@ class Resto{
         void inorder(TreeNode* node);
         void preorder(TreeNode* node);
         void postorder(TreeNode* node);
-        void displayTree();
         void createGraph();
 
         void pelanggan();
@@ -518,7 +517,7 @@ void Resto::menuList(){
     mergeSort(daftarP, 0, daftarP.size() - 1);
 
     cout << left << string(19, '-') << " PESANAN ANDA " << right << string(20, '-') << endl;
-    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "jumlah" << setw(totalWidth - 2) << "Total" << endl;
+    cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
     for(int i = 0; i < daftarP.size(); i++){
@@ -528,10 +527,10 @@ void Resto::menuList(){
 
     cout << left << string(50, '-') << endl;
 
-    cout << "\nTotal: " << right << setw(46) << total;
+    // cout << "\nTotal: " << right << setw(46) << total;
 
-    cout << "\n(Total Harga):" << right << setw(46) << endl;
-    displayTree();
+    // cout << "\n(Total Harga):" << right << setw(46) << endl;
+    // displayTree();
 
 }
 
@@ -715,17 +714,7 @@ void Resto::postorder(TreeNode* node) {
     }
 }
 
-void Resto::displayTree() {
-    // cout << "Inorder traversal: ";
-    // inorder(treeRoot);
-    // cout << endl;
-    cout << "Preorder traversal: ";
-    preorder(treeRoot);
-    cout << endl;
-    // cout << "Postorder traversal: ";
-    // postorder(treeRoot);
-    // cout << endl;
-}
+
 void Resto::tampilkanLetakMeja(){
     cout << "\nLetak Meja di Restoran:" << endl;
     graph.bfs(0); 
