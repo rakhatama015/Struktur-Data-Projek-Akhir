@@ -129,7 +129,6 @@ class Resto{
 
         void insertStack(pesanan p);
         void insertQueue(pesanan p);
-        void searchPesanan(string nama);
         TreeNode* insertTree(TreeNode* node, int data);
         void inorder(TreeNode* node);
         void preorder(TreeNode* node);
