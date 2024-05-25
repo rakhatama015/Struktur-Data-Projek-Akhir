@@ -704,7 +704,7 @@ void Resto::inorder(TreeNode* node) {
 
 void Resto::preorder(TreeNode* node) {
     if (node != nullptr) {
-        cout << '- ' << node->data << endl;
+        cout << "- " << node->data << endl;
         preorder(node->left);
         preorder(node->right);
     }
@@ -719,15 +719,11 @@ void Resto::postorder(TreeNode* node) {
 }
 
 void Resto::displayTree() {
-    // cout << "Inorder traversal: ";
-    // inorder(treeRoot);
-    // cout << endl;
-    cout << "Uang Yang Masuk: ";
+    
+    cout <<"\nUang Yang Masuk: \n";
     preorder(treeRoot);
     cout << endl;
-    // cout << "Postorder traversal: ";
-    // postorder(treeRoot);
-    // cout << endl;
+    
 }
 void Resto::tampilkanLetakMeja(){
     cout << "\nLetak Meja di Restoran:" << endl;
@@ -748,14 +744,14 @@ void Resto::createGraph() {
 
 void Resto::tampilkanAntrian() {
     if (queuePesanan.empty()) {
-        cout << '\n' << string(10, '-') << "Tidak ada antrian saat ini." << string(10, '-') << endl;
+        cout << '\n' << string(1, '-') << "Tidak ada antrian saat ini." << string(10, '-') << endl;
     } else {
-        cout << '\n' << string(10, '-') <<"Daftar antrian pesanan:" << string(10, '-') << endl;
+        cout << '\n' << string(15, '-') <<"Daftar Antrian Pesanan" << string(15, '-') << endl;
         queue<pesanan> tempQueue = queuePesanan;
         while (!tempQueue.empty()) {
             pesanan p = tempQueue.front();
             tempQueue.pop();
-            cout << p.namaPesanan << " - Jumlah: " << p.jumlahPesanan << " - Total: " << p.totalHarga << endl;
+            cout << left << setw(20) << p.namaPesanan << right << setw(10) <<" - Jumlah: " << p.jumlahPesanan << setw(15) << " - Total: " << p.totalHarga << endl;
         }
     }
 }
@@ -838,7 +834,7 @@ void Resto::tampilkanPesanan() {
     const int jumlahWidth = 8;
     const int totalWidth = 12;
 
-    cout << left << string(19, '-') << " \nDAFTAR PESANAN " << right << string(20, '-') << endl;
+    cout << '\n' <<left << string(19, '-') << " DAFTAR PESANAN " << right << string(20, '-') << endl;
     cout << left << setw(nameWidth + 3) << "Nama Pesanan" << right << setw(priceWidth) << "Harga" << setw(2 + jumlahWidth) << "Jumlah" << setw(totalWidth - 2) << "Total" << endl;
     cout << string(nameWidth + priceWidth + jumlahWidth + totalWidth + 3, '-') << endl;
 
