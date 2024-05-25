@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstring>
 #include <cmath>
+#include <string>
 #include <math.h>
 #include <iomanip>
 #include <queue>
@@ -31,8 +32,8 @@ class Resto{
         struct Node{
             string key;
             string name;
-            node* prev;
-            node* next;
+            Node* prev;
+            Node * next;
         };
         struct ruangan{
             Node* head;
@@ -617,7 +618,7 @@ void Resto::hash(string nama, long int nomerHP, int pilihan, string noHP) {
 }
 
 long int Resto::hashFunction(long int nomerHP){
-    return abs(nomerHP) % SIZE;
+    return labs(nomerHP) % SIZE;
 }
 
 int Resto::quadraticProbing(int nomerHP, int attempt) {
@@ -783,7 +784,7 @@ void Resto::reservasiRuangan() {
         pilihan = 2; // Jika meja kosong, langsung pilih opsi pindah
     }
 
-    hash(nama, nomerHP, pilihan, noHP);
+    hash2(nama, nomerHP, pilihan, noHP);
 
     cout << "|Meja Berhasil Di Reservasi|\n";
     cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
