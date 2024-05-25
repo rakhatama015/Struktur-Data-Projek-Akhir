@@ -33,7 +33,7 @@ class Resto{
             string key;
             string name;
             Node* prev;
-            Node * next;
+            Node* next;
         };
         struct ruangan{
             Node* head;
@@ -196,8 +196,10 @@ int main(){
             cout << '\n' << string(10, '-') << " Anda Memilih Keluar " << string(10, '-') << '\n';
             break;
         default:
+            cout << "\nPilihan Tidak Valid\n";
             break;
         }
+        cout << endl;
     }while(pilihan != 0);
 
     return 0;
@@ -235,7 +237,7 @@ void Resto::admin(){
         case 0:
             break;
         default:
-            cout << "Pilihan tidak valid" << endl;
+            cout << "\nPilihan tidak valid" << endl;
             break;
         }
     }while(pilihan != 0);
@@ -276,7 +278,7 @@ void Resto::pelanggan(){
         case 0:
             break;
         default:
-            cout << "Input Tidak Valid\n";
+            cout << "Pilihan Tidak Valid\n";
             break;
         }
     }while(pilihan != 0);
@@ -758,7 +760,7 @@ void Resto::tampilkanMejaKosong() {
 }
 
 void Resto::tampilkanReservasiMeja() {
-    cout << "Daftar reservasi meja:" << endl;
+    cout << "Daftar Reservasi Meja:" << endl;
     for (int i = 0; i < SIZE; i++) {
         if (meja[i].head != nullptr) {
             node* temp = meja[i].head;
@@ -778,11 +780,11 @@ void Resto::tampilkanReservasiMeja() {
 }
 
 void Resto::tampilkanReservasiRuangan() {
-    cout << "Daftar reservasi meja:" << endl;
+    cout << "Daftar Reservasi Ruang:" << endl;
     for (int i = 0; i < SIZE; i++) {
         if (ruang[i].head != nullptr) {
             Node* temp = ruang[i].head;
-            cout << "Meja " << i + 1 << ": ";
+            cout << "ruang " << i + 1 << ": ";
             while (temp != nullptr) {
                 cout << temp->name << " - No HP: " << temp->key;
                 if (temp->next != nullptr) {
@@ -843,7 +845,7 @@ void Resto::reservasiRuangan() {
     hash2(nama, nomerHP, pilihan, noHP);
 
     cout << "|Meja Berhasil Di Reservasi|\n";
-    cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
+    cout << "|Anda Mendapat Meja Nomor " << index + 1 << " |\n";
 }
 
 int Resto::quadraticProbing2(int nomerHP, int attempt) {
@@ -883,7 +885,7 @@ void Resto::hash2(string nama, long int nomerHP, int pilihan, string noHP) {
             newNode->prev = temp;
         }
     } else if(pilihan == 2) {
-        index = quadraticProbing(nomerHP, attempt);
+        index = quadraticProbing2(nomerHP, attempt);
 
         if (index != -1) {
             Node* newNode = new Node;
