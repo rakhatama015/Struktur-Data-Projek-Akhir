@@ -148,6 +148,8 @@ class Resto{
         void hash2(string nama, long int nomerHP, int pilihan, string noHP);
         int quadraticProbing2(int nomerHP, int attempt);
         void tampilkanLetakMeja();
+        int sumTree(TreeNode* node);
+        int getTotalIncome();
 };
 
 int main(){
@@ -217,6 +219,7 @@ void Resto::admin(){
         cout << "|2. Tampilkan Reservasi Meja\n";
         cout << "|3. Tampilkan Reservasi Ruangan\n";
         cout << "|4. Tampikan Daftar Pesanan dan Pembayaran Hari Ini\n";
+        cout << "|5. Tampilkan Total Uang Masuk Hari Ini\n";  // Tambahkan ini
         cout << "|0. Keluar\n";
         cout << "|Masukkan Pilihan > ";
         cin >> pilihan;
@@ -234,6 +237,9 @@ void Resto::admin(){
             break;
         case 4:
             tampilkanPesanan();
+            break;
+        case 5:
+            cout << "\nTotal uang masuk hari ini: " << getTotalIncome() << " Rupiah" << endl;  // Tambahkan ini
             break;
         case 0:
             break;
@@ -284,6 +290,16 @@ void Resto::pelanggan(){
         }
         cout << endl;
     }while(pilihan != 0);
+}
+int Resto::sumTree(TreeNode* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return node->data + sumTree(node->left) + sumTree(node->right);
+}
+
+int Resto::getTotalIncome() {
+    return sumTree(treeRoot);
 }
 
 void Resto::menuList(){
@@ -515,7 +531,7 @@ void Resto::menuList(){
 
     cout << "\nTotal: " << right << setw(46) << total;
 
-    cout << "\nTraversal Tree Pesanan (Total Harga):" << endl;
+    cout << "\n(Total Harga):" << right << setw(46) << endl;
     displayTree();
 
 }
@@ -701,15 +717,15 @@ void Resto::postorder(TreeNode* node) {
 }
 
 void Resto::displayTree() {
-    cout << "Inorder traversal: ";
-    inorder(treeRoot);
-    cout << endl;
+    // cout << "Inorder traversal: ";
+    // inorder(treeRoot);
+    // cout << endl;
     cout << "Preorder traversal: ";
     preorder(treeRoot);
     cout << endl;
-    cout << "Postorder traversal: ";
-    postorder(treeRoot);
-    cout << endl;
+    // cout << "Postorder traversal: ";
+    // postorder(treeRoot);
+    // cout << endl;
 }
 void Resto::tampilkanLetakMeja(){
     cout << "\nLetak Meja di Restoran:" << endl;
@@ -726,12 +742,6 @@ void Resto::createGraph() {
     graph.addEdge(4, 8);
     graph.addEdge(5, 9);
 }
-
-    // cout << "BFS traversal: ";
-    // graph.bfs(0);
-
-    // cout << "DFS traversal: ";
-    // graph.dfs(0);
 
 
 void Resto::tampilkanAntrian() {
