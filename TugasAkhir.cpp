@@ -54,23 +54,36 @@ class Resto{
                 adjList[v].push_back(u);
             }
             void bfs(int start) {
-                vector<bool> visited(adjList.size(), false);
-                queue<int> q;
-                q.push(start);
-                visited[start] = true;
-                while (!q.empty()) {
-                    int node = q.front();
-                    q.pop();
-                    cout << node << " ";
-                    for (int neighbor : adjList[node]) {
-                        if (!visited[neighbor]) {
-                            q.push(neighbor);
-                            visited[neighbor] = true;
-                        }
-                    }
-                }
-                cout << endl;
+        vector<bool> visited(adjList.size(), false);
+        queue<int> q;
+        q.push(start);
+        visited[start] = true;
+
+        int count = 0; // counter to keep track of the number of nodes printed
+
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            cout << "[Meja " << node + 1 << "] ";
+            count++;
+
+            if (count % 2 == 0) {
+                cout << endl; // new line after every two nodes
             }
+
+            for (int neighbor : adjList[node]) {
+                if (!visited[neighbor]) {
+                    q.push(neighbor);
+                    visited[neighbor] = true;
+                }
+            }
+        }
+
+        // Ensure new line if the last line has only one node
+        if (count % 2 != 0) {
+            cout << endl;
+        }
+    }
             void dfsUtil(int node, vector<bool>& visited) {
                 visited[node] = true;
                 cout << node << " ";
@@ -96,9 +109,12 @@ class Resto{
         Graph graph;
 
     public:
+    
         bangku meja[SIZE] = { nullptr };
         ruangan ruang[SIZE] = { nullptr };
-        Resto() : treeRoot(nullptr), graph(SIZE) {}
+        Resto() : treeRoot(nullptr), graph(SIZE) {
+            createGraph();
+        }
         void menuList();
         void pesanMenu();
         void tampilkanPesanan();
@@ -126,10 +142,12 @@ class Resto{
         void tampilkanAntrian();
         void tampilkanReservasiMeja();
         void tampilkanReservasiRuangan();
+        void tampilkanMejaKosong();
 
         void reservasiRuangan();
         void hash2(string nama, long int nomerHP, int pilihan, string noHP);
         int quadraticProbing2(int nomerHP, int attempt);
+        void tampilkanLetakMeja();
 };
 
 int main(){
@@ -250,10 +268,10 @@ void Resto::pelanggan(){
             reservasiRuangan();
             break;
         case 4:
-            tampilkanReservasiMeja();
+            tampilkanMejaKosong();
             break;
         case 5:
-            tampilkanReservasiRuangan();
+            tampilkanLetakMeja();
             break;
         case 0:
             break;
@@ -574,7 +592,7 @@ void Resto::reservasiMeja() {
     hash(nama, nomerHP, pilihan, noHP);
 
     cout << "|Meja Berhasil Di Reservasi |\n";
-    cout << "|Anda Mendapat Meja Nomor " << index << " |\n";
+    cout << "|Anda Mendapat Meja Nomor " << index + 1 << " |\n";
 }
 
 void Resto::hash(string nama, long int nomerHP, int pilihan, string noHP) {
@@ -689,7 +707,10 @@ void Resto::displayTree() {
     postorder(treeRoot);
     cout << endl;
 }
-
+void Resto::tampilkanLetakMeja(){
+    cout << "Letak Meja di Restoran:" << endl;
+    graph.bfs(0); 
+}
 void Resto::createGraph() {
     graph.addEdge(0, 1);
     graph.addEdge(0, 2);
@@ -697,13 +718,17 @@ void Resto::createGraph() {
     graph.addEdge(1, 4);
     graph.addEdge(2, 5);
     graph.addEdge(2, 6);
-
-    cout << "BFS traversal: ";
-    graph.bfs(0);
-
-    cout << "DFS traversal: ";
-    graph.dfs(0);
+    graph.addEdge(3, 7);
+    graph.addEdge(4, 8);
+    graph.addEdge(5, 9);
 }
+
+    // cout << "BFS traversal: ";
+    // graph.bfs(0);
+
+    // cout << "DFS traversal: ";
+    // graph.dfs(0);
+
 
 void Resto::tampilkanAntrian() {
     if (queuePesanan.empty()) {
@@ -716,6 +741,19 @@ void Resto::tampilkanAntrian() {
             tempQueue.pop();
             cout << p.namaPesanan << " - Jumlah: " << p.jumlahPesanan << " - Total: " << p.totalHarga << endl;
         }
+    }
+}
+void Resto::tampilkanMejaKosong() {
+    cout << "Daftar meja kosong:" << endl;
+    bool adaMejaKosong = false;
+    for (int i = 0; i < SIZE; i++) {
+        if (meja[i].head == nullptr) {
+            cout << "Meja " << i + 1 << endl;
+            adaMejaKosong = true;
+        }
+    }
+    if (!adaMejaKosong) {
+        cout << "Tidak ada meja kosong." << endl;
     }
 }
 
