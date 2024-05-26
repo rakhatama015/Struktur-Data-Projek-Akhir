@@ -12,6 +12,8 @@ using namespace std;
 
 #define SIZE 10
 #define MAX_NODES 10
+#define MAX_STACK_SIZE 100
+#define MAX_QUEUE_SIZE 100
 
 class Resto{
     private:
@@ -39,6 +41,51 @@ class Resto{
         struct ruangan{
             Node* head;
         };
+
+            pesanan stackPesanan[MAX_STACK_SIZE];
+            int topStack = -1;
+
+            pesanan queuePesanan[MAX_QUEUE_SIZE];
+            int frontQueue = 0, rearQueue = -1;
+
+            // Fungsi untuk menambahkan elemen ke stack
+            void pushStack(pesanan p) {
+                if (topStack == MAX_STACK_SIZE - 1) {
+                    cout << "Stack Penuh" << endl;
+                    return;
+                }
+                stackPesanan[++topStack] = p;
+            }
+
+            // Fungsi untuk menghapus elemen dari stack
+            pesanan popStack() {
+                if (topStack == -1) {
+                    cout << "Stack Kosong" << endl;
+                    pesanan p = {"", 0, 0, 0};
+                    return p;
+                }
+                return stackPesanan[topStack--];
+            }
+
+            // Fungsi untuk menambahkan elemen ke queue
+            void enqueueQueue(pesanan p) {
+                if (rearQueue == MAX_QUEUE_SIZE - 1) {
+                    cout << "Queue Penuh" << endl;
+                    return;
+                }
+                queuePesanan[++rearQueue] = p;
+            }
+
+            // Fungsi untuk menghapus elemen dari queue
+            pesanan dequeueQueue() {
+                if (frontQueue > rearQueue) {
+                    cout << "Queue Kosong" << endl;
+                    pesanan p = {"", 0, 0, 0};
+                    return p;
+                }
+                return queuePesanan[frontQueue++];
+            }
+
         struct TreeNode {
             int data;
             TreeNode* left;
@@ -64,15 +111,14 @@ class Resto{
 
             void bfs(int start) {
                 bool visited[MAX_NODES] = {false};
-                queue<int> q;
-                q.push(start);
+                enqueueQueue(start);
                 visited[start] = true;
 
                 int count = 0; // counter to keep track of the number of nodes printed
 
                 while (!q.empty()) {
-                    int node = q.front();
-                    q.pop();
+                    int node = dequeueQueue();
+                    dequeueQueue();
                     cout << "[Meja " << node + 1 << "] ";
                     count++;
 
@@ -114,8 +160,7 @@ class Resto{
         int antrian;
         pesanan daftarP[100];
 
-        stack<pesanan> stackPesanan;
-        queue<pesanan> queuePesanan;
+
         TreeNode* treeRoot;
         Graph graph;
 
